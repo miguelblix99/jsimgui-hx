@@ -25,7 +25,7 @@ class Main
         var pixelPtr : cpp.Star<cpp.Star<cpp.UInt8>> = pixels.addressOf();
         
         io.fonts.getTexDataAsRGBA32(pixelPtr, width, height);
-        io.fonts.texID = Pointer.addressOf(id).raw;
+        io.fonts.texID = cast Pointer.addressOf(id).raw;
         io.backendRendererName = 'my renderer';
 
         trace(width[0], height[0]);

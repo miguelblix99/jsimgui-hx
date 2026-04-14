@@ -8,7 +8,7 @@ This library is a continuation of the great work from @Aidan63 on [linc_imgui](h
 
 imgui-hx can currently be used with the following Haxe targets:
 - C++
-- Javascript (using [imgui-js](https://github.com/flyover/imgui-js))
+- Javascript (using [jsimgui](https://github.com/mori2003/jsimgui))
 
 ---
 ### Install
@@ -23,11 +23,11 @@ For functions which take and modify a float (e.g. colour edits, float inputs / s
 
 ### Usage (Javascript)
 
-Bindings are intended to be as close as possible to original C++ imgui implementation.
+The JS backend now follows `jsimgui`'s public ESM runtime instead of the old `imgui-js` UMD runtime.
 
-That means it should be possible to write a single ImGui code that works seemlessly on both C++ and JS targets.
+That keeps `imgui.ImGui` as the main Haxe import path, but the JS API is intentionally `jsimgui`-shaped and no longer promises full call-site parity with the C++ backend.
 
-Please note that javascript bindings are very recent and might not match exactly what is actually available from [imgui-js](https://github.com/flyover/imgui-js). That said, this should be iteratively improved in the future.
+Mutable JS inputs now use boxed one-element arrays such as `boxFloat(0.5)` and `boxBool(true)`.
 
 ### Reporting errors
 
@@ -39,7 +39,16 @@ There is no setup guide at the moment, but if you want to setup and use Dear ImG
 
 When targetting C++, it is using Dear ImGui's built-in backend (SDL + opengl) which should make integration easier on your own engine, if based on opengl as well.
 
-When targetting JS, it loads `imgui.umd.js` and `imgui_impl.umd.js` that you can find in [imgui-js dist directory](https://github.com/flyover/imgui-js/tree/08f05fb0f47e02978e4aa52e5a2b9b206e06998d/dist). These files are required as they contain Dear ImGui Web Assembly module.
+When targetting JS, build the `jsimgui` submodule first:
+
+```bash
+./tools/build-jsimgui.sh
+node tools/generate-jsimgui-externs.mjs
+```
+
+`./tools/build-jsimgui.sh` expects both `bun` and `emcc` (Emscripten) to be installed and will fail fast if either tool is missing.
+
+Then load the generated runtime from your page or app code with `imgui.JsRuntime.load('/lib/jsimgui/build/mod.js')` before calling `imgui.ImGuiImplWeb.init(...)`.
 
 ImGui's Metal/DirectX backends are not handled in imgui-hx bindings yet, and when using SDL + opengl, it is expected that your project uses `linc_sdl` and `linc_opengl` libraries, but pull requests are welcome to make the bindings work with more various environments.
 
@@ -55,7 +64,7 @@ import imgui.Helpers.*;
 2. Start creating UI by adding code that is executed at every frame of your app
 
 ```haxe
-var someFloatValue:Float = 0.0;
+var someFloatValue = boxFloat(0.0);
 
 function someUpdateLoopMethod() {
 
@@ -63,9 +72,9 @@ function someUpdateLoopMethod() {
 
     ImGui.begin('Hello');
     
-    ImGui.sliderFloat('Some slider', fromFloat(someFloatValue), 0.0, 1.0);
+    ImGui.sliderFloat('Some slider', someFloatValue, 0.0, 1.0);
     
-    if (someFloatValue == 1.0) {
+    if (someFloatValue[0] == 1.0) {
         ImGui.text('Float value is at MAX (1.0)');
     }
     
@@ -73,3 +82,5 @@ function someUpdateLoopMethod() {
 
 }
 ```
+
+See [test/js/README.md](test/js/README.md) for a complete browser demo that loads `jsimgui`, initializes `imgui.ImGuiImplWeb`, and renders Dear ImGui on a canvas.
