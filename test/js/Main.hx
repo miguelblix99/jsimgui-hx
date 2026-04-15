@@ -32,7 +32,7 @@ class Main
 			gl = canvas.getContext('webgl');
 		}
 
-		JsRuntime.load('/node_modules/@mori2003/jsimgui/build/mod.js')
+		JsRuntime.load('/runtime/jsimgui/mod.js')
 			.then(_ -> ImGuiImplWeb.init({
 				canvas: canvas,
 			}))

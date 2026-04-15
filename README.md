@@ -1,12 +1,18 @@
 # jsimgui-hx
 
-JS-only Haxe bindings for [Dear ImGui](https://github.com/ocornut/imgui), powered by the published [`@mori2003/jsimgui`](https://www.npmjs.com/package/@mori2003/jsimgui) runtime.
+JS-only Haxe bindings for [Dear ImGui](https://github.com/ocornut/imgui), powered by the `jsimgui` WebAssembly runtime.
 
 The public Haxe entrypoints live under `imgui.*`, while the runtime API follows `jsimgui`'s JS/WASM shape.
 
 ## Install
 
-Install the package:
+Install from Haxelib:
+
+```bash
+haxelib install jsimgui-hx
+```
+
+Or install from npm/Bun:
 
 ```bash
 bun add jsimgui-hx
@@ -18,21 +24,26 @@ If your repo uses Bun trusted dependency scripts, trust `jsimgui-hx` so it can r
 bun pm trust jsimgui-hx
 ```
 
-For local development without npm, you can still use:
+For local development without publication, you can still use:
 
 ```bash
 haxelib dev jsimgui-hx /path/to/jsimgui-hx
 ```
 
-## Runtime Files
+## Bundled Runtime Files
 
-The underlying JS runtime comes from `@mori2003/jsimgui` and is installed under:
+`jsimgui-hx` ships the prebuilt runtime files under `runtime/jsimgui/`:
 
-- `node_modules/@mori2003/jsimgui/build/mod.js`
-- `node_modules/@mori2003/jsimgui/build/jsimgui.em.js`
-- `node_modules/@mori2003/jsimgui/build/*.d.ts`
+- `mod.js`
+- `jsimgui.em.js`
+- `jsimgui-freetype.em.js`
 
-Serve `mod.js` and `jsimgui.em.js` from your app's public path, then pass the served `mod.js` URL to `JsRuntime.load(...)`.
+Copy that directory into your app's public assets, for example to `/vendor/jsimgui/`, then load the served `mod.js` file with `JsRuntime.load(...)`.
+
+Typical copy source paths:
+
+- npm/Bun install: `node_modules/jsimgui-hx/runtime/jsimgui/`
+- Haxelib install: `<haxelib libpath jsimgui-hx>/runtime/jsimgui/`
 
 ## Usage
 
@@ -42,7 +53,7 @@ import imgui.ImGui;
 import imgui.ImGuiImplWeb;
 import imgui.JsRuntime;
 
-await JsRuntime.load("/node_modules/@mori2003/jsimgui/build/mod.js");
+await JsRuntime.load("/vendor/jsimgui/mod.js");
 await ImGuiImplWeb.init({ canvas: canvasElement });
 
 var someFloatValue = boxFloat(0.0);
@@ -59,6 +70,6 @@ ImGui.end();
 
 ## Development
 
-For local repo setup, extern regeneration, and release notes, see [CONTRIBUTING.md](CONTRIBUTING.md).
+For local repo setup, manual runtime/extern refresh steps, and release notes, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 For a browser demo, see [test/js/README.md](test/js/README.md).

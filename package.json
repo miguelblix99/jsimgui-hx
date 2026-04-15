@@ -20,6 +20,7 @@
   },
   "main": "index.js",
   "files": [
+    "runtime",
     "src",
     "scripts",
     "haxelib.json",
@@ -27,20 +28,19 @@
     "LICENSE",
     "index.js"
   ],
-  "dependencies": {
-    "@mori2003/jsimgui": "0.13.0"
-  },
   "devDependencies": {
+    "@mori2003/jsimgui": "0.13.0",
     "typescript": "^6.0.2"
   },
   "scripts": {
     "postinstall": "node ./scripts/install-haxelib.cjs",
+    "sync:haxelib": "node ./scripts/sync-haxelib-metadata.cjs",
     "build:jsimgui": "bash ./tools/build-jsimgui.sh",
     "generate:jsimgui-externs": "bun ./tools/generate-jsimgui-externs.mjs",
     "build:js": "bun run build:jsimgui && bun run generate:jsimgui-externs",
     "build": "bun run build:js",
-    "prepack": "bun run build:js",
     "pack:dry": "npm pack --dry-run",
+    "version": "node ./scripts/sync-haxelib-metadata.cjs",
     "reset": "rm -rf ./build ./node_modules && bun install"
   }
 }
