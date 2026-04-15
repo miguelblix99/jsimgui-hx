@@ -1,7 +1,32 @@
 {
   "name": "jsimgui-hx",
-  "private": true,
+  "version": "0.1.0",
   "description": "JS-only Dear ImGui bindings for Haxe backed by @mori2003/jsimgui",
+  "license": "MIT",
+  "keywords": [
+    "haxe",
+    "imgui",
+    "dear-imgui",
+    "jsimgui",
+    "haxelib"
+  ],
+  "homepage": "https://github.com/miguelblix99/jsimgui-hx#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/miguelblix99/jsimgui-hx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/miguelblix99/jsimgui-hx/issues"
+  },
+  "main": "index.js",
+  "files": [
+    "src",
+    "scripts",
+    "haxelib.json",
+    "README.md",
+    "LICENSE",
+    "index.js"
+  ],
   "dependencies": {
     "@mori2003/jsimgui": "0.13.0"
   },
@@ -9,10 +34,13 @@
     "typescript": "^6.0.2"
   },
   "scripts": {
+    "postinstall": "node ./scripts/install-haxelib.cjs",
     "build:jsimgui": "bash ./tools/build-jsimgui.sh",
     "generate:jsimgui-externs": "bun ./tools/generate-jsimgui-externs.mjs",
     "build:js": "bun run build:jsimgui && bun run generate:jsimgui-externs",
     "build": "bun run build:js",
+    "prepack": "bun run build:js",
+    "pack:dry": "npm pack --dry-run",
     "reset": "rm -rf ./build ./node_modules && bun install"
 
   }

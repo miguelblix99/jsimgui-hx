@@ -1,52 +1,40 @@
-# Dear ImGui for Haxe JS
+# jsimgui-hx
 
 JS-only Haxe bindings for [Dear ImGui](https://github.com/ocornut/imgui), powered by the published [`@mori2003/jsimgui`](https://www.npmjs.com/package/@mori2003/jsimgui) runtime.
 
-The public Haxe entrypoints stay under `imgui.*`, but the JS API is intentionally `jsimgui`-shaped rather than trying to mirror the old native/C++ layer.
+The public Haxe entrypoints live under `imgui.*`, while the runtime API follows `jsimgui`'s JS/WASM shape.
 
 ## Install
 
-The haxelib name stays `imgui-hx`.
+Install the package:
 
 ```bash
-haxelib dev imgui-hx /path/to/jsimgui-hx
+bun add jsimgui-hx
 ```
 
-## Repo setup
-
-Run:
+If your repo uses Bun trusted dependency scripts, trust `jsimgui-hx` so it can register itself into `.haxelib/` during install:
 
 ```bash
-bun install
+bun pm trust jsimgui-hx
 ```
 
-That is the only bootstrap step. It installs the published `@mori2003/jsimgui` package, whose runtime files live under:
+For local development without npm, you can still use:
+
+```bash
+haxelib dev jsimgui-hx /path/to/jsimgui-hx
+```
+
+## Runtime Files
+
+The underlying JS runtime comes from `@mori2003/jsimgui` and is installed under:
 
 - `node_modules/@mori2003/jsimgui/build/mod.js`
 - `node_modules/@mori2003/jsimgui/build/jsimgui.em.js`
 - `node_modules/@mori2003/jsimgui/build/*.d.ts`
 
-If you want to verify that runtime is present manually, run:
+Serve `mod.js` and `jsimgui.em.js` from your app's public path, then pass the served `mod.js` URL to `JsRuntime.load(...)`.
 
-```bash
-bun run build:jsimgui
-```
-
-If you want to regenerate the Haxe externs from the synced declaration files, run:
-
-```bash
-bun run generate:jsimgui-externs
-```
-
-To do both in one step:
-
-```bash
-bun run build:js
-```
-
-## Runtime usage
-
-Load the `jsimgui` ESM runtime before initializing the web backend:
+## Usage
 
 ```haxe
 import imgui.Helpers.*;
@@ -56,13 +44,7 @@ import imgui.JsRuntime;
 
 await JsRuntime.load("/node_modules/@mori2003/jsimgui/build/mod.js");
 await ImGuiImplWeb.init({ canvas: canvasElement });
-```
 
-In your own app, serve `@mori2003/jsimgui/build/mod.js` and `jsimgui.em.js` from whatever public path your frontend uses, then pass that `mod.js` URL to `JsRuntime.load(...)`.
-
-Mutable JS inputs use boxed one-element arrays:
-
-```haxe
 var someFloatValue = boxFloat(0.0);
 
 ImGui.begin("Hello");
@@ -75,4 +57,8 @@ if (someFloatValue[0] == 1.0) {
 ImGui.end();
 ```
 
-See [test/js/README.md](test/js/README.md) for the complete browser demo.
+## Development
+
+For local repo setup, extern regeneration, and release notes, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+For a browser demo, see [test/js/README.md](test/js/README.md).
