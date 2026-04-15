@@ -1,11 +1,8 @@
--cp gen
 -cp src
-
--lib safety
--lib json2object
+-cp test/js
 
 -main Main
 
--cpp out
+-js build/completion.js
 
 --no-output

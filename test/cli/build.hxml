@@ -1,4 +1,0 @@
---cwd test/cli
--main Main
--cpp cpp
--cp ../../src

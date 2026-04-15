@@ -2,9 +2,9 @@
 {
     "name" : "imgui-hx",
     "license": "MIT",
-    "description": "Haxe externs for ImGui",
+    "description": "Haxe JS externs for Dear ImGui backed by jsimgui",
     "version" : "0.0.1",
-    "releasenote": "Working on unified bindings to C++ and JS builds of ImGui",
+    "releasenote": "JS-only bindings powered by jsimgui",
     "contributors": [
         "Aidan",
         "jeremyfa"

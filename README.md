@@ -1,106 +1,78 @@
-# Dear ImGui for Haxe
+# Dear ImGui for Haxe JS
 
-Haxe bindings for [Dear ImGui](https://github.com/ocornut/imgui).
+JS-only Haxe bindings for [Dear ImGui](https://github.com/ocornut/imgui), powered by the published [`@mori2003/jsimgui`](https://www.npmjs.com/package/@mori2003/jsimgui) runtime.
 
-This library is a continuation of the great work from @Aidan63 on [linc_imgui](https://github.com/Aidan63/linc_imgui).
+The public Haxe entrypoints stay under `imgui.*`, but the JS API is intentionally `jsimgui`-shaped rather than trying to mirror the old native/C++ layer.
 
----
+## Install
 
-imgui-hx can currently be used with the following Haxe targets:
-- C++
-- Javascript (using [jsimgui](https://github.com/mori2003/jsimgui))
+The haxelib name stays `imgui-hx`.
 
----
-### Install
+```bash
+haxelib dev imgui-hx /path/to/jsimgui-hx
+```
 
-`haxelib git imgui-hx https://github.com/jeremyfa/imgui-hx`
+## Repo setup
 
-### Usage (C++)
-
-The API follows the ImGui C++ API with most functions and attributes having a haxe equivalent with the same name. When the API wants a ImTextureID (c++ void*) you can use the cpp.Pointer class and rawCast() / reinterpret() to convert to and from whatever classes your framework uses.
-
-For functions which take and modify a float (e.g. colour edits, float inputs / sliders) the float must be a cpp.Float32 type, not a default Haxe float. When creating types such as Vec2 and Vec4 the floats passed to the create method do not need to be explicitly defined as a cpp.Float32 since it is not permanently modifying that variable.
-
-### Usage (Javascript)
-
-The JS backend now follows `jsimgui`'s public ESM runtime instead of the old `imgui-js` UMD runtime.
-
-That keeps `imgui.ImGui` as the main Haxe import path, but the JS API is intentionally `jsimgui`-shaped and no longer promises full call-site parity with the C++ backend.
-
-Mutable JS inputs now use boxed one-element arrays such as `boxFloat(0.5)` and `boxBool(true)`.
-
-### Reporting errors
-
-This is a new binding so there's bound to be missing and / or non-working functions and features. If you find them please create a new issue so it can be fixed. Pull Requests are also welcome.
-
-### Setup in project/engine
-
-There is no setup guide at the moment, but if you want to setup and use Dear ImGui into your own project/engine, you could take a look at the [imgui plugin](https://github.com/ceramic-engine/ceramic/tree/master/plugins/imgui/runtime/src/ceramic) for ceramic engine, which contain code to make Dear ImGui work with both C++ and JS targets.
-
-When targetting C++, it is using Dear ImGui's built-in backend (SDL + opengl) which should make integration easier on your own engine, if based on opengl as well.
-
-When targetting JS, bootstrap the repo once with:
+Run:
 
 ```bash
 bun install
 ```
 
-That now does the local workspace setup for you:
-- clones/updates `lib/cimgui` and `lib/jsimgui`
-- installs `lib/jsimgui`'s node dependencies
-- installs a local Emscripten toolchain under `.deps/emsdk`
-- installs Python `ply` into a local environment under `.deps/python` when `venv` is available, or falls back to a repo-local Python user base under `.deps/python-user`
+That is the only bootstrap step. It installs the published `@mori2003/jsimgui` package, whose runtime files live under:
 
-Then build the `jsimgui` runtime with:
+- `node_modules/@mori2003/jsimgui/build/mod.js`
+- `node_modules/@mori2003/jsimgui/build/jsimgui.em.js`
+- `node_modules/@mori2003/jsimgui/build/*.d.ts`
 
-```bash
-bun run build:js
-```
-
-If you only want the runtime build without regenerating Haxe externs, run:
+If you want to verify that runtime is present manually, run:
 
 ```bash
 bun run build:jsimgui
 ```
 
-The generated runtime lives under:
-- `lib/jsimgui/build/mod.js`
-- `lib/jsimgui/build/jsimgui.em.js`
-- `lib/jsimgui/build/mod.d.ts`
+If you want to regenerate the Haxe externs from the synced declaration files, run:
 
-Then load the generated runtime from your page or app code with `imgui.JsRuntime.load('/lib/jsimgui/build/mod.js')` before calling `imgui.ImGuiImplWeb.init(...)`.
-
-ImGui's Metal/DirectX backends are not handled in imgui-hx bindings yet, and when using SDL + opengl, it is expected that your project uses `linc_sdl` and `linc_opengl` libraries, but pull requests are welcome to make the bindings work with more various environments.
-
-Once everything is setup, you can, in any haxe file of your project:
-
-1. Import Dear ImGui and additional haxe helpers
-
-```haxe
-import imgui.ImGui;
-import imgui.Helpers.*;
+```bash
+bun run generate:jsimgui-externs
 ```
 
-2. Start creating UI by adding code that is executed at every frame of your app
+To do both in one step:
+
+```bash
+bun run build:js
+```
+
+## Runtime usage
+
+Load the `jsimgui` ESM runtime before initializing the web backend:
+
+```haxe
+import imgui.Helpers.*;
+import imgui.ImGui;
+import imgui.ImGuiImplWeb;
+import imgui.JsRuntime;
+
+await JsRuntime.load("/node_modules/@mori2003/jsimgui/build/mod.js");
+await ImGuiImplWeb.init({ canvas: canvasElement });
+```
+
+In your own app, serve `@mori2003/jsimgui/build/mod.js` and `jsimgui.em.js` from whatever public path your frontend uses, then pass that `mod.js` URL to `JsRuntime.load(...)`.
+
+Mutable JS inputs use boxed one-element arrays:
 
 ```haxe
 var someFloatValue = boxFloat(0.0);
 
-function someUpdateLoopMethod() {
+ImGui.begin("Hello");
+ImGui.sliderFloat("Some slider", someFloatValue, 0.0, 1.0);
 
-    // Create a small ImGui window to edit a float value
-
-    ImGui.begin('Hello');
-    
-    ImGui.sliderFloat('Some slider', someFloatValue, 0.0, 1.0);
-    
-    if (someFloatValue[0] == 1.0) {
-        ImGui.text('Float value is at MAX (1.0)');
-    }
-    
-    ImGui.end();
-
+if (someFloatValue[0] == 1.0) {
+    ImGui.text("Float value is at MAX (1.0)");
 }
+
+ImGui.end();
 ```
 
-See [test/js/README.md](test/js/README.md) for a complete browser demo that loads `jsimgui`, initializes `imgui.ImGuiImplWeb`, and renders Dear ImGui on a canvas.
+See [test/js/README.md](test/js/README.md) for the complete browser demo.
