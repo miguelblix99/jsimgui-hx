@@ -1,0 +1,11 @@
+{
+  "name": "jsimgui-hx",
+  "private": true,
+  "description": "Bootstrap helpers for the local jsimgui-hx workspace",
+  "scripts": {
+    "postinstall": "bash ./tools/bootstrap-jsimgui-env.sh --install-only",
+    "build:jsimgui": "bash ./tools/build-jsimgui.sh",
+    "generate:jsimgui-externs": "node ./tools/generate-jsimgui-externs.mjs",
+    "build": "bash ./tools/build-jsimgui.sh && node ./tools/generate-jsimgui-externs.mjs"
+  }
+}

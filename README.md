@@ -39,14 +39,34 @@ There is no setup guide at the moment, but if you want to setup and use Dear ImG
 
 When targetting C++, it is using Dear ImGui's built-in backend (SDL + opengl) which should make integration easier on your own engine, if based on opengl as well.
 
-When targetting JS, build the `jsimgui` submodule first:
+When targetting JS, bootstrap the repo once with:
 
 ```bash
-./tools/build-jsimgui.sh
-node tools/generate-jsimgui-externs.mjs
+bun install
 ```
 
-`./tools/build-jsimgui.sh` expects both `bun` and `emcc` (Emscripten) to be installed and will fail fast if either tool is missing.
+That now does the local workspace setup for you:
+- clones/updates `lib/cimgui` and `lib/jsimgui`
+- installs `lib/jsimgui`'s node dependencies
+- installs a local Emscripten toolchain under `.deps/emsdk`
+- installs Python `ply` into a local environment under `.deps/python` when `venv` is available, or falls back to a repo-local Python user base under `.deps/python-user`
+
+Then build the `jsimgui` runtime with:
+
+```bash
+bun run build:js
+```
+
+If you only want the runtime build without regenerating Haxe externs, run:
+
+```bash
+bun run build:jsimgui
+```
+
+The generated runtime lives under:
+- `lib/jsimgui/build/mod.js`
+- `lib/jsimgui/build/jsimgui.em.js`
+- `lib/jsimgui/build/mod.d.ts`
 
 Then load the generated runtime from your page or app code with `imgui.JsRuntime.load('/lib/jsimgui/build/mod.js')` before calling `imgui.ImGuiImplWeb.init(...)`.
 

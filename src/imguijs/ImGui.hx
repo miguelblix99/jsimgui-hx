@@ -4426,16 +4426,15 @@ abstract ImGuiFreeTypeLoaderFlags(Int) from Int to Int {
 	}
 }
 
-@:keep @:native("globalThis.__imguiHxJsImGui.ImDrawListSharedData") extern class ImDrawListSharedData extends ReferenceStruct {
+@:keep @:native("globalThis.__imguiHxJsImGui.ValueStruct") extern class ValueStruct {
 }
 
-@:keep @:native("globalThis.__imguiHxJsImGui.ImFontAtlasBuilder") extern class ImFontAtlasBuilder extends ReferenceStruct {
-}
-
-@:keep @:native("globalThis.__imguiHxJsImGui.ImFontLoader") extern class ImFontLoader extends ReferenceStruct {
-}
-
-@:keep @:native("globalThis.__imguiHxJsImGui.ImGuiContext") extern class ImGuiContext extends ReferenceStruct {
+@:keep @:native("globalThis.__imguiHxJsImGui.ReferenceStruct") extern class ReferenceStruct {
+	var ptr:Dynamic;
+	static function New():Dynamic;
+	static function From(ptr:Dynamic):Dynamic;
+	@:native("Drop")
+	function drop():Void;
 }
 
 @:keep @:native("globalThis.__imguiHxJsImGui.ImVec2") extern class ImVec2 extends ValueStruct {
@@ -4458,6 +4457,18 @@ abstract ImGuiFreeTypeLoaderFlags(Int) from Int to Int {
 	var _TexID:ImTextureID;
 	function new(_TexID:ImTextureID);
 	static function From(obj:Dynamic):ImTextureRef;
+}
+
+@:keep @:native("globalThis.__imguiHxJsImGui.ImDrawListSharedData") extern class ImDrawListSharedData extends ReferenceStruct {
+}
+
+@:keep @:native("globalThis.__imguiHxJsImGui.ImFontAtlasBuilder") extern class ImFontAtlasBuilder extends ReferenceStruct {
+}
+
+@:keep @:native("globalThis.__imguiHxJsImGui.ImFontLoader") extern class ImFontLoader extends ReferenceStruct {
+}
+
+@:keep @:native("globalThis.__imguiHxJsImGui.ImGuiContext") extern class ImGuiContext extends ReferenceStruct {
 }
 
 @:keep @:native("globalThis.__imguiHxJsImGui.ImGuiTableSortSpecs") extern class ImGuiTableSortSpecs extends ReferenceStruct {
@@ -4969,11 +4980,13 @@ abstract ImGuiFreeTypeLoaderFlags(Int) from Int to Int {
 	function seekCursorForItem(item_index:Float):Void;
 }
 
-@:keep @:native("globalThis.__imguiHxJsImGui.ImColor") extern class ImColor extends ValueStruct {
+@:keep @:native("globalThis.__imguiHxJsImGui.ImColor") extern class ImColor extends ReferenceStruct {
 	@:native("Value")
 	var value:ImVec4;
-	function new(Value:ImVec4);
-	static function From(obj:Dynamic):ImColor;
+	@:native("SetHSV")
+	function setHSV(h:Float, s:Float, v:Float, ?a:Float):Void;
+	@:native("HSV")
+	function hsv(h:Float, s:Float, v:Float, ?a:Float):ImColor;
 }
 
 @:keep @:native("globalThis.__imguiHxJsImGui.ImGuiMultiSelectIO") extern class ImGuiMultiSelectIO extends ReferenceStruct {
@@ -5191,8 +5204,6 @@ abstract ImGuiFreeTypeLoaderFlags(Int) from Int to Int {
 @:keep @:native("globalThis.__imguiHxJsImGui.ImFontAtlas") extern class ImFontAtlas extends ReferenceStruct {
 	@:native("Flags")
 	var flags:ImFontAtlasFlags;
-	@:native("TexDesiredFormat")
-	var texDesiredFormat:ImTextureFormat;
 	@:native("TexGlyphPadding")
 	var texGlyphPadding:Float;
 	@:native("TexMinWidth")

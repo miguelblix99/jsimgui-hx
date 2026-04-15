@@ -5,7 +5,11 @@ import { pathToFileURL } from 'node:url'
 
 const repoRoot = path.resolve(import.meta.dirname, '..')
 const runtimeRoot = 'globalThis.__imguiHxJsImGui'
-const dtsPath = path.resolve(repoRoot, 'lib', 'jsimgui', 'build', 'mod.d.ts')
+const dtsPaths = [
+	path.resolve(repoRoot, 'lib', 'jsimgui', 'build', 'core.d.ts'),
+	path.resolve(repoRoot, 'lib', 'jsimgui', 'build', 'imgui.d.ts'),
+	path.resolve(repoRoot, 'lib', 'jsimgui', 'build', 'impl', 'web.d.ts'),
+]
 const tsPath = path.resolve(repoRoot, 'lib', 'jsimgui', 'node_modules', 'typescript', 'lib', 'typescript.js')
 const imguiOutputPath = path.resolve(repoRoot, 'src', 'imguijs', 'ImGui.hx')
 const imguiImplOutputPath = path.resolve(repoRoot, 'src', 'imguijs', 'ImGuiImplWeb.hx')
@@ -79,12 +83,19 @@ function fail(message) {
 	process.exit(1)
 }
 
-async function readSourceFile() {
-	try {
-		return await fs.readFile(dtsPath, 'utf8')
-	} catch {
-		fail(`Missing ${path.relative(repoRoot, dtsPath)}. Build lib/jsimgui first with ./tools/build-jsimgui.sh.`)
+async function readSourceFiles() {
+	const files = []
+	for (const filePath of dtsPaths) {
+		try {
+			files.push({
+				filePath,
+				sourceText: await fs.readFile(filePath, 'utf8'),
+			})
+		} catch {
+			fail(`Missing ${path.relative(repoRoot, filePath)}. Build lib/jsimgui first with ./tools/build-jsimgui.sh.`)
+		}
 	}
+	return files
 }
 
 function isExported(node) {
@@ -116,38 +127,40 @@ function lowerCamel(name) {
 	return reservedNames.has(lowered) ? name : lowered
 }
 
-function getNodeText(node, sourceFile) {
-	return node.getText(sourceFile)
+function getNodeText(node) {
+	return node.getText(node.getSourceFile())
 }
 
-function collectDeclarations(sourceFile) {
+function collectDeclarations(sourceFiles) {
 	const typeAliases = new Map()
 	const interfaces = new Set()
 	const classes = new Map()
 	const constObjects = new Map()
 
-	for (const statement of sourceFile.statements) {
-		if (!isExported(statement)) {
-			continue
-		}
-		if (ts.isTypeAliasDeclaration(statement)) {
-			typeAliases.set(statement.name.text, statement)
-			continue
-		}
-		if (ts.isInterfaceDeclaration(statement)) {
-			interfaces.add(statement.name.text)
-			continue
-		}
-		if (ts.isClassDeclaration(statement) && statement.name) {
-			classes.set(statement.name.text, statement)
-			continue
-		}
-		if (ts.isVariableStatement(statement)) {
-			for (const declaration of statement.declarationList.declarations) {
-				if (!ts.isIdentifier(declaration.name) || declaration.type == null) {
-					continue
+	for (const sourceFile of sourceFiles) {
+		for (const statement of sourceFile.statements) {
+			if (!isExported(statement)) {
+				continue
+			}
+			if (ts.isTypeAliasDeclaration(statement)) {
+				typeAliases.set(statement.name.text, statement)
+				continue
+			}
+			if (ts.isInterfaceDeclaration(statement)) {
+				interfaces.add(statement.name.text)
+				continue
+			}
+			if (ts.isClassDeclaration(statement) && statement.name) {
+				classes.set(statement.name.text, statement)
+				continue
+			}
+			if (ts.isVariableStatement(statement)) {
+				for (const declaration of statement.declarationList.declarations) {
+					if (!ts.isIdentifier(declaration.name) || declaration.type == null) {
+						continue
+					}
+					constObjects.set(declaration.name.text, declaration)
 				}
-				constObjects.set(declaration.name.text, declaration)
 			}
 		}
 	}
@@ -280,7 +293,7 @@ function mapType(typeNode, context = {}) {
 		return 'Dynamic'
 	}
 	if (ts.isTypeReferenceNode(typeNode)) {
-		const typeName = getNodeText(typeNode.typeName, context.sourceFile)
+		const typeName = getNodeText(typeNode.typeName)
 		const typeArguments = typeNode.typeArguments?.map(argument => mapType(argument, context)) ?? []
 		if (typeName === 'Promise') {
 			const innerType = typeArguments[0] ?? 'Void'
@@ -400,7 +413,7 @@ function collectClassFields(classDeclaration, context) {
 
 	for (const member of classDeclaration.members) {
 		if (ts.isPropertyDeclaration(member)) {
-			const nativeName = ts.isIdentifier(member.name) ? member.name.text : getNodeText(member.name, context.sourceFile)
+			const nativeName = ts.isIdentifier(member.name) ? member.name.text : getNodeText(member.name)
 			const haxeName = lowerCamel(nativeName)
 			fields.push({
 				kind: 'var',
@@ -412,7 +425,7 @@ function collectClassFields(classDeclaration, context) {
 			continue
 		}
 		if (ts.isGetAccessorDeclaration(member) || ts.isSetAccessorDeclaration(member)) {
-			const nativeName = ts.isIdentifier(member.name) ? member.name.text : getNodeText(member.name, context.sourceFile)
+			const nativeName = ts.isIdentifier(member.name) ? member.name.text : getNodeText(member.name)
 			const isStatic = (ts.getCombinedModifierFlags(member) & ts.ModifierFlags.Static) !== 0
 			const entryKey = `${isStatic ? 'static:' : 'instance:'}${nativeName}`
 			if (!accessors.has(entryKey)) {
@@ -517,7 +530,7 @@ function renderHeritage(declaration, context) {
 	if (!ts.isExpressionWithTypeArguments(baseType)) {
 		return ''
 	}
-	const baseName = getNodeText(baseType.expression, context.sourceFile)
+	const baseName = getNodeText(baseType.expression)
 	if (context.manualClassNames?.has(baseName) || context.knownTypes?.has(baseName)) {
 		return ` extends ${baseName}`
 	}
@@ -661,18 +674,19 @@ function updateRootAliasFile(aliasNames) {
 }
 
 async function main() {
-	const sourceText = await readSourceFile()
-	const sourceFile = ts.createSourceFile(dtsPath, sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS)
-	const declarations = collectDeclarations(sourceFile)
+	const sourceFiles = (await readSourceFiles()).map(({ filePath, sourceText }) =>
+		ts.createSourceFile(filePath, sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS),
+	)
+	const declarations = collectDeclarations(sourceFiles)
 	const aliasNames = new Set(declarations.typeAliases.keys())
 	const imguiDeclaration = declarations.constObjects.get('ImGui')
 	const implDeclaration = declarations.constObjects.get('ImGuiImplWeb')
 
 	if (imguiDeclaration == null) {
-		fail('Unable to find exported const ImGui in mod.d.ts.')
+		fail('Unable to find exported const ImGui in the jsimgui build declarations.')
 	}
 	if (implDeclaration == null) {
-		fail('Unable to find exported const ImGuiImplWeb in mod.d.ts.')
+		fail('Unable to find exported const ImGuiImplWeb in the jsimgui build declarations.')
 	}
 
 	const groups = collectImGuiGroups(imguiDeclaration, aliasNames)
@@ -686,7 +700,6 @@ async function main() {
 		...manualClassNames,
 	])
 	const context = {
-		sourceFile,
 		interfaceNames: declarations.interfaces,
 		knownTypes,
 		manualClassNames,

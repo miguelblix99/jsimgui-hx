@@ -21,9 +21,7 @@ extern class Module {
 	static var ImFontLoader:Dynamic;
 	static var ImGui:Dynamic;
 	static var ImGuiContext:Dynamic;
-	static var ImGuiImplOpenGL3:Dynamic;
 	static var ImGuiImplWeb:Dynamic;
-	static var ImGuiImplWGPU:Dynamic;
 	static var ImGuiInputTextCallbackData:Dynamic;
 	static var ImGuiIO:Dynamic;
 	static var ImGuiListClipper:Dynamic;
@@ -39,6 +37,9 @@ extern class Module {
 	static var ImTextureRef:Dynamic;
 	static var ImVec2:Dynamic;
 	static var ImVec4:Dynamic;
+	static var Mod:Dynamic;
+	static var ReferenceStruct:Dynamic;
 	static var State:Dynamic;
+	static var ValueStruct:Dynamic;
 }
 #end
