@@ -44,3 +44,31 @@ Publish a new version:
 npm login
 npm publish
 ```
+
+## Haxelib Release
+
+Build the curated Haxelib zip:
+
+```bash
+bun run pack:haxelib
+```
+
+That writes `build/haxelib/jsimgui-hx-<version>.zip` and includes only:
+
+- `src/`
+- `runtime/`
+- `haxelib.json`
+- `README.md`
+- `LICENSE`
+
+Test the zip locally:
+
+```bash
+haxelib install build/haxelib/jsimgui-hx-<version>.zip
+```
+
+Submit it:
+
+```bash
+haxelib submit build/haxelib/jsimgui-hx-<version>.zip
+```

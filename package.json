@@ -35,6 +35,7 @@
   "scripts": {
     "postinstall": "node ./scripts/install-haxelib.cjs",
     "sync:haxelib": "node ./scripts/sync-haxelib-metadata.cjs",
+    "pack:haxelib": "node ./scripts/package-haxelib.cjs",
     "build:jsimgui": "bash ./tools/build-jsimgui.sh",
     "generate:jsimgui-externs": "bun ./tools/generate-jsimgui-externs.mjs",
     "build:js": "bun run build:jsimgui && bun run generate:jsimgui-externs",

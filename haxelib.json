@@ -1,12 +1,16 @@
 {
     "name": "jsimgui-hx",
     "license": "MIT",
+    "tags": [
+        "haxe",
+        "imgui",
+        "js",
+        "wasm"
+    ],
     "description": "JS-only Dear ImGui bindings for Haxe backed by @mori2003/jsimgui",
     "version": "0.1.1",
     "releasenote": "JS-only bindings powered by jsimgui with bundled runtime assets",
     "contributors": [
-        "Aidan",
-        "jeremyfa",
         "miguelblix99"
     ],
     "classPath": "src",
