@@ -7,7 +7,7 @@ import { pathToFileURL } from 'node:url'
 const repoRoot = path.resolve(import.meta.dirname, '..')
 const runtimeRoot = 'globalThis.__imguiHxJsImGui'
 const require = createRequire(import.meta.url)
-const jsimguiBuildRoot = path.resolve(repoRoot, 'node_modules', '@mori2003', 'jsimgui', 'build')
+const jsimguiBuildRoot = path.resolve(repoRoot, 'runtime', 'jsimgui')
 const splitDtsPaths = [
 	path.resolve(jsimguiBuildRoot, 'core.d.ts'),
 	path.resolve(jsimguiBuildRoot, 'imgui.d.ts'),
