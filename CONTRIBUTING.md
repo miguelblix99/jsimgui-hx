@@ -8,7 +8,7 @@ Install dependencies:
 bun install
 ```
 
-That installs the published `@mori2003/jsimgui` runtime used by the extern generator.
+That installs the TypeScript compiler used by the extern generator. The `jsimgui` runtime source is built from the `lib/jsimgui` submodule.
 
 ## Regenerate Externs
 
@@ -52,6 +52,8 @@ Build the curated Haxelib zip:
 ```bash
 bun run pack:haxelib
 ```
+
+The pack step syncs `haxelib.json` metadata from `package.json` before creating the zip.
 
 That writes `build/haxelib/jsimgui-hx-<version>.zip` and includes only:
 

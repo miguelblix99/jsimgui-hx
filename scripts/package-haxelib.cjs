@@ -3,7 +3,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const cp = require('node:child_process');
 
-const packageRoot = process.cwd();
+const packageRoot = path.join(__dirname, '..');
+const syncMetadataScript = path.join(__dirname, 'sync-haxelib-metadata.cjs');
+
+cp.execFileSync(process.execPath, [syncMetadataScript], {
+	cwd: packageRoot,
+	stdio: 'inherit',
+});
+
 const packageJson = JSON.parse(fs.readFileSync(path.join(packageRoot, 'package.json'), 'utf8'));
 const outputDir = path.join(packageRoot, 'build', 'haxelib');
 const archiveName = `${packageJson.name}-${packageJson.version}.zip`;
