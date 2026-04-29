@@ -8,27 +8,33 @@ Install dependencies:
 bun install
 ```
 
-That installs the TypeScript compiler used by the extern generator. The `jsimgui` runtime source is built from the `lib/jsimgui` submodule.
+That installs the TypeScript compiler used by the extern generator. The `jsimgui` runtime source is built from the `lib/jsimgui` submodule, which points at the Assar/Hacksaw-maintained `assarbergh-hacksaw/jsimgui` fork.
 
-## Regenerate Externs
+## Build Runtime and Externs
 
-Check that the upstream runtime package is present:
-
-```bash
-bun run build:jsimgui
-```
-
-Regenerate the Haxe externs from the installed declaration files:
+Build the upstream runtime and regenerate Haxe externs:
 
 ```bash
-bun run generate:jsimgui-externs
+bun run build
 ```
 
-Run both steps together:
+That command initializes the submodule, builds the upstream Emscripten/WASM runtime in Docker, copies `lib/jsimgui/build/` to `runtime/jsimgui/`, and regenerates `src/imguijs/` from the runtime declaration files.
+
+If `runtime/jsimgui/` is already fresh and you only need to regenerate externs:
 
 ```bash
-bun run build:js
+bun tools/generate-jsimgui-externs.mjs
 ```
+
+## Demo
+
+Compile the browser demo:
+
+```bash
+haxe test/js/build.hxml
+```
+
+Then serve the repository root and open `test/js/index.html`. See [test/js/README.md](test/js/README.md) for details.
 
 ## Release
 
