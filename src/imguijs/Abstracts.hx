@@ -83,5 +83,15 @@ abstract ImVec4(ImVec4Backing) from ImVec4Backing to ImVec4Backing {
 	public static function multiply(lhs:ImVec4, rhs:Float):ImVec4 {
 		return new ImVec4(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs);
 	}
+
+	@:from
+	public static function fromHex(hex:Int):ImVec4 {
+		final a:Int = (hex & 0xFF000000) >> 24;
+		final r:Int = (hex & 0xFF0000) >> 16;
+		final g:Int = (hex & 0xFF00) >> 8;
+		final b:Int = (hex & 0xFF);
+
+		return new ImVec4(r / 255, g / 255, b / 255, (a <= 0) ? 1.0 : (a / 255));
+	}
 }
 #end
