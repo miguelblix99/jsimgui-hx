@@ -41,6 +41,7 @@ typedef ImPlotRect = imguijs.ImPlot.ImPlotRect;
 typedef ImPlotScale = imguijs.ImPlot.ImPlotScale;
 typedef ImPlotScatterFlags = imguijs.ImPlot.ImPlotScatterFlags;
 typedef ImPlotShadedFlags = imguijs.ImPlot.ImPlotShadedFlags;
+typedef ImPlotSpec = imguijs.ImPlot.ImPlotSpec;
 typedef ImPlotStairsFlags = imguijs.ImPlot.ImPlotStairsFlags;
 typedef ImPlotStemsFlags = imguijs.ImPlot.ImPlotStemsFlags;
 typedef ImPlotStyle = imguijs.ImPlot.ImPlotStyle;

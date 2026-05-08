@@ -39,6 +39,7 @@ extern class Module {
 	static var ImPlotPoint:Dynamic;
 	static var ImPlotRange:Dynamic;
 	static var ImPlotRect:Dynamic;
+	static var ImPlotSpec:Dynamic;
 	static var ImPlotTime:Dynamic;
 	static var ImTextureRef:Dynamic;
 	static var ImVec2:Dynamic;

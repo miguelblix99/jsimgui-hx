@@ -1631,6 +1631,34 @@ abstract ImPlotTimeUnit(Int) from Int to Int {
 	function new(?S:Float, ?Us:Float);
 	static function From(obj:ImPlotTime):ImPlotTime;
 }
+@:keep @:native("globalThis.__imguiHxJsImGui.ImPlotSpec") extern class ImPlotSpec extends imguijs.ImGui.ValueStruct {
+	@:native("LineColor")
+	var lineColor:imguijs.Abstracts.ImVec4;
+	@:native("LineWeight")
+	var lineWeight:Float;
+	@:native("FillColor")
+	var fillColor:imguijs.Abstracts.ImVec4;
+	@:native("FillAlpha")
+	var fillAlpha:Float;
+	@:native("Marker")
+	var marker:Float;
+	@:native("MarkerSize")
+	var markerSize:Float;
+	@:native("MarkerLineColor")
+	var markerLineColor:imguijs.Abstracts.ImVec4;
+	@:native("MarkerFillColor")
+	var markerFillColor:imguijs.Abstracts.ImVec4;
+	@:native("Size")
+	var size:Float;
+	@:native("Offset")
+	var offset:Float;
+	@:native("Stride")
+	var stride:Float;
+	@:native("Flags")
+	var flags:Float;
+	function new(?LineColor:imguijs.Abstracts.ImVec4, ?LineWeight:Float, ?FillColor:imguijs.Abstracts.ImVec4, ?FillAlpha:Float, ?Marker:Float, ?MarkerSize:Float, ?MarkerLineColor:imguijs.Abstracts.ImVec4, ?MarkerFillColor:imguijs.Abstracts.ImVec4, ?Size:Float, ?Offset:Float, ?Stride:Float, ?Flags:Float);
+	static function From(obj:ImPlotSpec):ImPlotSpec;
+}
 @:keep @:native("globalThis.__imguiHxJsImGui.ImPlot") extern class ImPlot {
 	static var Auto:Float;
 	@:native("AddColormap_U32Ptr")
@@ -1737,518 +1765,68 @@ abstract ImPlotTimeUnit(Int) from Int to Int {
 	static function nextColormapColor():imguijs.Abstracts.ImVec4;
 	@:native("NextMarker")
 	static function nextMarker():Float;
-	@:native("PixelsToPlot_Float")
-	static function pixelsToPlot_Float(x:Float, y:Float, ?x_axis:Float, ?y_axis:Float):ImPlotPoint;
-	@:native("PixelsToPlot_Vec2")
-	static function pixelsToPlot_Vec2(pix:imguijs.Abstracts.ImVec2, ?x_axis:Float, ?y_axis:Float):ImPlotPoint;
-	@:native("PlotBarGroups_doublePtr")
-	static function plotBarGroups_doublePtr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_FloatPtr")
-	static function plotBarGroups_FloatPtr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_S16Ptr")
-	static function plotBarGroups_S16Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_S32Ptr")
-	static function plotBarGroups_S32Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_S64Ptr")
-	static function plotBarGroups_S64Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_S8Ptr")
-	static function plotBarGroups_S8Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_U16Ptr")
-	static function plotBarGroups_U16Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_U32Ptr")
-	static function plotBarGroups_U32Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_U64Ptr")
-	static function plotBarGroups_U64Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBarGroups_U8Ptr")
-	static function plotBarGroups_U8Ptr(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_doublePtrdoublePtr")
-	static function plotBars_doublePtrdoublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_doublePtrInt")
-	static function plotBars_doublePtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_FloatPtrFloatPtr")
-	static function plotBars_FloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_FloatPtrInt")
-	static function plotBars_FloatPtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S16PtrInt")
-	static function plotBars_S16PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S16PtrS16Ptr")
-	static function plotBars_S16PtrS16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S32PtrInt")
-	static function plotBars_S32PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S32PtrS32Ptr")
-	static function plotBars_S32PtrS32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S64PtrInt")
-	static function plotBars_S64PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S64PtrS64Ptr")
-	static function plotBars_S64PtrS64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S8PtrInt")
-	static function plotBars_S8PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_S8PtrS8Ptr")
-	static function plotBars_S8PtrS8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U16PtrInt")
-	static function plotBars_U16PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U16PtrU16Ptr")
-	static function plotBars_U16PtrU16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U32PtrInt")
-	static function plotBars_U32PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U32PtrU32Ptr")
-	static function plotBars_U32PtrU32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U64PtrInt")
-	static function plotBars_U64PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U64PtrU64Ptr")
-	static function plotBars_U64PtrU64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U8PtrInt")
-	static function plotBars_U8PtrInt(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:Dynamic):Void;
-	@:native("PlotBars_U8PtrU8Ptr")
-	static function plotBars_U8PtrU8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_doublePtrdoublePtrdoublePtr")
-	static function plotBubbles_doublePtrdoublePtrdoublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_doublePtrdoublePtrInt")
-	static function plotBubbles_doublePtrdoublePtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_FloatPtrFloatPtrFloatPtr")
-	static function plotBubbles_FloatPtrFloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_FloatPtrFloatPtrInt")
-	static function plotBubbles_FloatPtrFloatPtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S16PtrS16PtrInt")
-	static function plotBubbles_S16PtrS16PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S16PtrS16PtrS16Ptr")
-	static function plotBubbles_S16PtrS16PtrS16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S32PtrS32PtrInt")
-	static function plotBubbles_S32PtrS32PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S32PtrS32PtrS32Ptr")
-	static function plotBubbles_S32PtrS32PtrS32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S64PtrS64PtrInt")
-	static function plotBubbles_S64PtrS64PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S64PtrS64PtrS64Ptr")
-	static function plotBubbles_S64PtrS64PtrS64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S8PtrS8PtrInt")
-	static function plotBubbles_S8PtrS8PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_S8PtrS8PtrS8Ptr")
-	static function plotBubbles_S8PtrS8PtrS8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U16PtrU16PtrInt")
-	static function plotBubbles_U16PtrU16PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U16PtrU16PtrU16Ptr")
-	static function plotBubbles_U16PtrU16PtrU16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U32PtrU32PtrInt")
-	static function plotBubbles_U32PtrU32PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U32PtrU32PtrU32Ptr")
-	static function plotBubbles_U32PtrU32PtrU32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U64PtrU64PtrInt")
-	static function plotBubbles_U64PtrU64PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U64PtrU64PtrU64Ptr")
-	static function plotBubbles_U64PtrU64PtrU64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U8PtrU8PtrInt")
-	static function plotBubbles_U8PtrU8PtrInt(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotBubbles_U8PtrU8PtrU8Ptr")
-	static function plotBubbles_U8PtrU8PtrU8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_doublePtr")
-	static function plotDigital_doublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_FloatPtr")
-	static function plotDigital_FloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_S16Ptr")
-	static function plotDigital_S16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_S32Ptr")
-	static function plotDigital_S32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_S64Ptr")
-	static function plotDigital_S64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_S8Ptr")
-	static function plotDigital_S8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_U16Ptr")
-	static function plotDigital_U16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_U32Ptr")
-	static function plotDigital_U32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_U64Ptr")
-	static function plotDigital_U64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotDigital_U8Ptr")
-	static function plotDigital_U8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
+	@:native("PixelsToPlot")
+	static function pixelsToPlot(x:Float, y:Float, ?x_axis:Float, ?y_axis:Float):ImPlotPoint;
+	@:native("PixelsToPlotVec2")
+	static function pixelsToPlotVec2(pix:imguijs.Abstracts.ImVec2, ?x_axis:Float, ?y_axis:Float):ImPlotPoint;
+	@:native("PlotBarGroups")
+	static function plotBarGroups(label_ids:Null<Array<String>>, values:Array<Float>, item_count:Float, group_count:Float, ?group_size:Float, ?shift:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotBarsXY")
+	static function plotBarsXY(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, bar_size:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotBars")
+	static function plotBars(label_id:String, values:Array<Float>, count:Float, ?bar_size:Float, ?shift:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotBubblesXY")
+	static function plotBubblesXY(label_id:String, xs:Array<Float>, ys:Array<Float>, szs:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotBubbles")
+	static function plotBubbles(label_id:String, values:Array<Float>, szs:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotDigital")
+	static function plotDigital(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
 	@:native("PlotDummy")
-	static function plotDummy(label_id:String, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_doublePtrdoublePtrdoublePtrdoublePtr")
-	static function plotErrorBars_doublePtrdoublePtrdoublePtrdoublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_doublePtrdoublePtrdoublePtrInt")
-	static function plotErrorBars_doublePtrdoublePtrdoublePtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_FloatPtrFloatPtrFloatPtrFloatPtr")
-	static function plotErrorBars_FloatPtrFloatPtrFloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_FloatPtrFloatPtrFloatPtrInt")
-	static function plotErrorBars_FloatPtrFloatPtrFloatPtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S16PtrS16PtrS16PtrInt")
-	static function plotErrorBars_S16PtrS16PtrS16PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S16PtrS16PtrS16PtrS16Ptr")
-	static function plotErrorBars_S16PtrS16PtrS16PtrS16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S32PtrS32PtrS32PtrInt")
-	static function plotErrorBars_S32PtrS32PtrS32PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S32PtrS32PtrS32PtrS32Ptr")
-	static function plotErrorBars_S32PtrS32PtrS32PtrS32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S64PtrS64PtrS64PtrInt")
-	static function plotErrorBars_S64PtrS64PtrS64PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S64PtrS64PtrS64PtrS64Ptr")
-	static function plotErrorBars_S64PtrS64PtrS64PtrS64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S8PtrS8PtrS8PtrInt")
-	static function plotErrorBars_S8PtrS8PtrS8PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_S8PtrS8PtrS8PtrS8Ptr")
-	static function plotErrorBars_S8PtrS8PtrS8PtrS8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U16PtrU16PtrU16PtrInt")
-	static function plotErrorBars_U16PtrU16PtrU16PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U16PtrU16PtrU16PtrU16Ptr")
-	static function plotErrorBars_U16PtrU16PtrU16PtrU16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U32PtrU32PtrU32PtrInt")
-	static function plotErrorBars_U32PtrU32PtrU32PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U32PtrU32PtrU32PtrU32Ptr")
-	static function plotErrorBars_U32PtrU32PtrU32PtrU32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U64PtrU64PtrU64PtrInt")
-	static function plotErrorBars_U64PtrU64PtrU64PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U64PtrU64PtrU64PtrU64Ptr")
-	static function plotErrorBars_U64PtrU64PtrU64PtrU64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U8PtrU8PtrU8PtrInt")
-	static function plotErrorBars_U8PtrU8PtrU8PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotErrorBars_U8PtrU8PtrU8PtrU8Ptr")
-	static function plotErrorBars_U8PtrU8PtrU8PtrU8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_doublePtr")
-	static function plotHeatmap_doublePtr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_FloatPtr")
-	static function plotHeatmap_FloatPtr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_S16Ptr")
-	static function plotHeatmap_S16Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_S32Ptr")
-	static function plotHeatmap_S32Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_S64Ptr")
-	static function plotHeatmap_S64Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_S8Ptr")
-	static function plotHeatmap_S8Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_U16Ptr")
-	static function plotHeatmap_U16Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_U32Ptr")
-	static function plotHeatmap_U32Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_U64Ptr")
-	static function plotHeatmap_U64Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHeatmap_U8Ptr")
-	static function plotHeatmap_U8Ptr(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:Dynamic):Void;
-	@:native("PlotHistogram_doublePtr")
-	static function plotHistogram_doublePtr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_FloatPtr")
-	static function plotHistogram_FloatPtr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_S16Ptr")
-	static function plotHistogram_S16Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_S32Ptr")
-	static function plotHistogram_S32Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_S64Ptr")
-	static function plotHistogram_S64Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_S8Ptr")
-	static function plotHistogram_S8Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_U16Ptr")
-	static function plotHistogram_U16Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_U32Ptr")
-	static function plotHistogram_U32Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_U64Ptr")
-	static function plotHistogram_U64Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram_U8Ptr")
-	static function plotHistogram_U8Ptr(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_doublePtr")
-	static function plotHistogram2D_doublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_FloatPtr")
-	static function plotHistogram2D_FloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_S16Ptr")
-	static function plotHistogram2D_S16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_S32Ptr")
-	static function plotHistogram2D_S32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_S64Ptr")
-	static function plotHistogram2D_S64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_S8Ptr")
-	static function plotHistogram2D_S8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_U16Ptr")
-	static function plotHistogram2D_U16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_U32Ptr")
-	static function plotHistogram2D_U32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_U64Ptr")
-	static function plotHistogram2D_U64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotHistogram2D_U8Ptr")
-	static function plotHistogram2D_U8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:Dynamic):Float;
-	@:native("PlotInfLines_doublePtr")
-	static function plotInfLines_doublePtr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_FloatPtr")
-	static function plotInfLines_FloatPtr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_S16Ptr")
-	static function plotInfLines_S16Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_S32Ptr")
-	static function plotInfLines_S32Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_S64Ptr")
-	static function plotInfLines_S64Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_S8Ptr")
-	static function plotInfLines_S8Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_U16Ptr")
-	static function plotInfLines_U16Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_U32Ptr")
-	static function plotInfLines_U32Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_U64Ptr")
-	static function plotInfLines_U64Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotInfLines_U8Ptr")
-	static function plotInfLines_U8Ptr(label_id:String, values:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_doublePtrdoublePtr")
-	static function plotLine_doublePtrdoublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_doublePtrInt")
-	static function plotLine_doublePtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_FloatPtrFloatPtr")
-	static function plotLine_FloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_FloatPtrInt")
-	static function plotLine_FloatPtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S16PtrInt")
-	static function plotLine_S16PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S16PtrS16Ptr")
-	static function plotLine_S16PtrS16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S32PtrInt")
-	static function plotLine_S32PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S32PtrS32Ptr")
-	static function plotLine_S32PtrS32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S64PtrInt")
-	static function plotLine_S64PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S64PtrS64Ptr")
-	static function plotLine_S64PtrS64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S8PtrInt")
-	static function plotLine_S8PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_S8PtrS8Ptr")
-	static function plotLine_S8PtrS8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U16PtrInt")
-	static function plotLine_U16PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U16PtrU16Ptr")
-	static function plotLine_U16PtrU16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U32PtrInt")
-	static function plotLine_U32PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U32PtrU32Ptr")
-	static function plotLine_U32PtrU32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U64PtrInt")
-	static function plotLine_U64PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U64PtrU64Ptr")
-	static function plotLine_U64PtrU64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U8PtrInt")
-	static function plotLine_U8PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotLine_U8PtrU8Ptr")
-	static function plotLine_U8PtrU8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_doublePtrStr")
-	static function plotPieChart_doublePtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_FloatPtrStr")
-	static function plotPieChart_FloatPtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_S16PtrStr")
-	static function plotPieChart_S16PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_S32PtrStr")
-	static function plotPieChart_S32PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_S64PtrStr")
-	static function plotPieChart_S64PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_S8PtrStr")
-	static function plotPieChart_S8PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_U16PtrStr")
-	static function plotPieChart_U16PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_U32PtrStr")
-	static function plotPieChart_U32PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_U64PtrStr")
-	static function plotPieChart_U64PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPieChart_U8PtrStr")
-	static function plotPieChart_U8PtrStr(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_doublePtr")
-	static function plotPolygon_doublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_FloatPtr")
-	static function plotPolygon_FloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_S16Ptr")
-	static function plotPolygon_S16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_S32Ptr")
-	static function plotPolygon_S32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_S64Ptr")
-	static function plotPolygon_S64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_S8Ptr")
-	static function plotPolygon_S8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_U16Ptr")
-	static function plotPolygon_U16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_U32Ptr")
-	static function plotPolygon_U32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_U64Ptr")
-	static function plotPolygon_U64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotPolygon_U8Ptr")
-	static function plotPolygon_U8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_doublePtrdoublePtr")
-	static function plotScatter_doublePtrdoublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_doublePtrInt")
-	static function plotScatter_doublePtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_FloatPtrFloatPtr")
-	static function plotScatter_FloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_FloatPtrInt")
-	static function plotScatter_FloatPtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S16PtrInt")
-	static function plotScatter_S16PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S16PtrS16Ptr")
-	static function plotScatter_S16PtrS16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S32PtrInt")
-	static function plotScatter_S32PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S32PtrS32Ptr")
-	static function plotScatter_S32PtrS32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S64PtrInt")
-	static function plotScatter_S64PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S64PtrS64Ptr")
-	static function plotScatter_S64PtrS64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S8PtrInt")
-	static function plotScatter_S8PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_S8PtrS8Ptr")
-	static function plotScatter_S8PtrS8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U16PtrInt")
-	static function plotScatter_U16PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U16PtrU16Ptr")
-	static function plotScatter_U16PtrU16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U32PtrInt")
-	static function plotScatter_U32PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U32PtrU32Ptr")
-	static function plotScatter_U32PtrU32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U64PtrInt")
-	static function plotScatter_U64PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U64PtrU64Ptr")
-	static function plotScatter_U64PtrU64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U8PtrInt")
-	static function plotScatter_U8PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotScatter_U8PtrU8Ptr")
-	static function plotScatter_U8PtrU8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_doublePtrdoublePtrdoublePtr")
-	static function plotShaded_doublePtrdoublePtrdoublePtr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_doublePtrdoublePtrInt")
-	static function plotShaded_doublePtrdoublePtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_doublePtrInt")
-	static function plotShaded_doublePtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_FloatPtrFloatPtrFloatPtr")
-	static function plotShaded_FloatPtrFloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_FloatPtrFloatPtrInt")
-	static function plotShaded_FloatPtrFloatPtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_FloatPtrInt")
-	static function plotShaded_FloatPtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S16PtrInt")
-	static function plotShaded_S16PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S16PtrS16PtrInt")
-	static function plotShaded_S16PtrS16PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S16PtrS16PtrS16Ptr")
-	static function plotShaded_S16PtrS16PtrS16Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S32PtrInt")
-	static function plotShaded_S32PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S32PtrS32PtrInt")
-	static function plotShaded_S32PtrS32PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S32PtrS32PtrS32Ptr")
-	static function plotShaded_S32PtrS32PtrS32Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S64PtrInt")
-	static function plotShaded_S64PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S64PtrS64PtrInt")
-	static function plotShaded_S64PtrS64PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S64PtrS64PtrS64Ptr")
-	static function plotShaded_S64PtrS64PtrS64Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S8PtrInt")
-	static function plotShaded_S8PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S8PtrS8PtrInt")
-	static function plotShaded_S8PtrS8PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_S8PtrS8PtrS8Ptr")
-	static function plotShaded_S8PtrS8PtrS8Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U16PtrInt")
-	static function plotShaded_U16PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U16PtrU16PtrInt")
-	static function plotShaded_U16PtrU16PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U16PtrU16PtrU16Ptr")
-	static function plotShaded_U16PtrU16PtrU16Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U32PtrInt")
-	static function plotShaded_U32PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U32PtrU32PtrInt")
-	static function plotShaded_U32PtrU32PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U32PtrU32PtrU32Ptr")
-	static function plotShaded_U32PtrU32PtrU32Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U64PtrInt")
-	static function plotShaded_U64PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U64PtrU64PtrInt")
-	static function plotShaded_U64PtrU64PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U64PtrU64PtrU64Ptr")
-	static function plotShaded_U64PtrU64PtrU64Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U8PtrInt")
-	static function plotShaded_U8PtrInt(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U8PtrU8PtrInt")
-	static function plotShaded_U8PtrU8PtrInt(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:Dynamic):Void;
-	@:native("PlotShaded_U8PtrU8PtrU8Ptr")
-	static function plotShaded_U8PtrU8PtrU8Ptr(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_doublePtrdoublePtr")
-	static function plotStairs_doublePtrdoublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_doublePtrInt")
-	static function plotStairs_doublePtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_FloatPtrFloatPtr")
-	static function plotStairs_FloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_FloatPtrInt")
-	static function plotStairs_FloatPtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S16PtrInt")
-	static function plotStairs_S16PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S16PtrS16Ptr")
-	static function plotStairs_S16PtrS16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S32PtrInt")
-	static function plotStairs_S32PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S32PtrS32Ptr")
-	static function plotStairs_S32PtrS32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S64PtrInt")
-	static function plotStairs_S64PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S64PtrS64Ptr")
-	static function plotStairs_S64PtrS64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S8PtrInt")
-	static function plotStairs_S8PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_S8PtrS8Ptr")
-	static function plotStairs_S8PtrS8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U16PtrInt")
-	static function plotStairs_U16PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U16PtrU16Ptr")
-	static function plotStairs_U16PtrU16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U32PtrInt")
-	static function plotStairs_U32PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U32PtrU32Ptr")
-	static function plotStairs_U32PtrU32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U64PtrInt")
-	static function plotStairs_U64PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U64PtrU64Ptr")
-	static function plotStairs_U64PtrU64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U8PtrInt")
-	static function plotStairs_U8PtrInt(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:Dynamic):Void;
-	@:native("PlotStairs_U8PtrU8Ptr")
-	static function plotStairs_U8PtrU8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_doublePtrdoublePtr")
-	static function plotStems_doublePtrdoublePtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_doublePtrInt")
-	static function plotStems_doublePtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_FloatPtrFloatPtr")
-	static function plotStems_FloatPtrFloatPtr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_FloatPtrInt")
-	static function plotStems_FloatPtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S16PtrInt")
-	static function plotStems_S16PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S16PtrS16Ptr")
-	static function plotStems_S16PtrS16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S32PtrInt")
-	static function plotStems_S32PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S32PtrS32Ptr")
-	static function plotStems_S32PtrS32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S64PtrInt")
-	static function plotStems_S64PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S64PtrS64Ptr")
-	static function plotStems_S64PtrS64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S8PtrInt")
-	static function plotStems_S8PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_S8PtrS8Ptr")
-	static function plotStems_S8PtrS8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U16PtrInt")
-	static function plotStems_U16PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U16PtrU16Ptr")
-	static function plotStems_U16PtrU16Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U32PtrInt")
-	static function plotStems_U32PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U32PtrU32Ptr")
-	static function plotStems_U32PtrU32Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U64PtrInt")
-	static function plotStems_U64PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U64PtrU64Ptr")
-	static function plotStems_U64PtrU64Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U8PtrInt")
-	static function plotStems_U8PtrInt(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:Dynamic):Void;
-	@:native("PlotStems_U8PtrU8Ptr")
-	static function plotStems_U8PtrU8Ptr(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:Dynamic):Void;
+	static function plotDummy(label_id:String, ?spec:ImPlotSpec):Void;
+	@:native("PlotErrorBarsRange")
+	static function plotErrorBarsRange(label_id:String, xs:Array<Float>, ys:Array<Float>, neg:Array<Float>, pos:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotErrorBars")
+	static function plotErrorBars(label_id:String, xs:Array<Float>, ys:Array<Float>, err:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotHeatmap")
+	static function plotHeatmap(label_id:String, values:Array<Float>, rows:Float, cols:Float, ?scale_min:Float, ?scale_max:Float, ?label_fmt:String, ?bounds_min:ImPlotPoint, ?bounds_max:ImPlotPoint, ?spec:ImPlotSpec):Void;
+	@:native("PlotHistogram")
+	static function plotHistogram(label_id:String, values:Array<Float>, count:Float, ?bins:Float, ?bar_scale:Float, ?range:ImPlotRange, ?spec:ImPlotSpec):Float;
+	@:native("PlotHistogram2D")
+	static function plotHistogram2D(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?x_bins:Float, ?y_bins:Float, ?range:ImPlotRect, ?spec:ImPlotSpec):Float;
+	@:native("PlotInfLines")
+	static function plotInfLines(label_id:String, values:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotLineXY")
+	static function plotLineXY(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotLine")
+	static function plotLine(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotPieChart")
+	static function plotPieChart(label_ids:Null<Array<String>>, values:Array<Float>, count:Float, x:Float, y:Float, radius:Float, ?label_fmt:String, ?angle0:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotPolygon")
+	static function plotPolygon(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotScatterXY")
+	static function plotScatterXY(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotScatter")
+	static function plotScatter(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotShadedBand")
+	static function plotShadedBand(label_id:String, xs:Array<Float>, ys1:Array<Float>, ys2:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotShadedXY")
+	static function plotShadedXY(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?yref:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotShaded")
+	static function plotShaded(label_id:String, values:Array<Float>, count:Float, ?yref:Float, ?xscale:Float, ?xstart:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotStairsXY")
+	static function plotStairsXY(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotStairs")
+	static function plotStairs(label_id:String, values:Array<Float>, count:Float, ?xscale:Float, ?xstart:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotStemsXY")
+	static function plotStemsXY(label_id:String, xs:Array<Float>, ys:Array<Float>, count:Float, ?ref:Float, ?spec:ImPlotSpec):Void;
+	@:native("PlotStems")
+	static function plotStems(label_id:String, values:Array<Float>, count:Float, ?ref:Float, ?scale:Float, ?start:Float, ?spec:ImPlotSpec):Void;
 	@:native("PlotText")
-	static function plotText(text:String, x:Float, y:Float, ?pix_offset:imguijs.Abstracts.ImVec2, ?spec:Dynamic):Void;
-	@:native("PlotToPixels_double")
-	static function plotToPixels_double(x:Float, y:Float, ?x_axis:Float, ?y_axis:Float):imguijs.Abstracts.ImVec2;
-	@:native("PlotToPixels_PlotPoint")
-	static function plotToPixels_PlotPoint(plt:ImPlotPoint, ?x_axis:Float, ?y_axis:Float):imguijs.Abstracts.ImVec2;
+	static function plotText(text:String, x:Float, y:Float, ?pix_offset:imguijs.Abstracts.ImVec2, ?spec:ImPlotSpec):Void;
+	@:native("PlotToPixels")
+	static function plotToPixels(x:Float, y:Float, ?x_axis:Float, ?y_axis:Float):imguijs.Abstracts.ImVec2;
+	@:native("PlotToPixelsPoint")
+	static function plotToPixelsPoint(plt:ImPlotPoint, ?x_axis:Float, ?y_axis:Float):imguijs.Abstracts.ImVec2;
 	@:native("PopColormap")
 	static function popColormap(?count:Float):Void;
 	@:native("PopPlotClipRect")
@@ -2309,10 +1887,10 @@ abstract ImPlotTimeUnit(Int) from Int to Int {
 	static function setupAxisLinks(axis:Float, link_min:Array<Float>, link_max:Array<Float>):Void;
 	@:native("SetupAxisScale_PlotScale")
 	static function setupAxisScale_PlotScale(axis:Float, scale:Float):Void;
-	@:native("SetupAxisTicks_double")
-	static function setupAxisTicks_double(axis:Float, v_min:Float, v_max:Float, n_ticks:Float, ?labels:Array<String>, ?keep_default:Bool):Void;
-	@:native("SetupAxisTicks_doublePtr")
-	static function setupAxisTicks_doublePtr(axis:Float, values:Array<Float>, n_ticks:Float, ?labels:Array<String>, ?keep_default:Bool):Void;
+	@:native("SetupAxisTicksRange")
+	static function setupAxisTicksRange(axis:Float, v_min:Float, v_max:Float, n_ticks:Float, ?labels:Array<String>, ?keep_default:Bool):Void;
+	@:native("SetupAxisTicks")
+	static function setupAxisTicks(axis:Float, values:Array<Float>, n_ticks:Float, ?labels:Array<String>, ?keep_default:Bool):Void;
 	@:native("SetupAxisZoomConstraints")
 	static function setupAxisZoomConstraints(axis:Float, z_min:Float, z_max:Float):Void;
 	@:native("SetupFinish")
@@ -2347,76 +1925,6 @@ abstract ImPlotTimeUnit(Int) from Int to Int {
 	static function inputMap_destroy(self:Float):Void;
 	@:native("InputMap_ImPlotInputMap")
 	static function inputMap_ImPlotInputMap():Float;
-	@:native("Point_destroy")
-	static function point_destroy(self:Float):Void;
-	@:native("Point_ImPlotPoint_double")
-	static function point_ImPlotPoint_double(_x:Float, _y:Float):Float;
-	@:native("Point_ImPlotPoint_Nil")
-	static function point_ImPlotPoint_Nil():Float;
-	@:native("Point_ImPlotPoint_Vec2")
-	static function point_ImPlotPoint_Vec2(p:imguijs.Abstracts.ImVec2):Float;
-	@:native("Range_Clamp")
-	static function range_Clamp(self:Float, value:Float):Float;
-	@:native("Range_Contains")
-	static function range_Contains(self:Float, value:Float):Bool;
-	@:native("Range_destroy")
-	static function range_destroy(self:Float):Void;
-	@:native("Range_ImPlotRange_double")
-	static function range_ImPlotRange_double(_min:Float, _max:Float):Float;
-	@:native("Range_ImPlotRange_Nil")
-	static function range_ImPlotRange_Nil():Float;
-	@:native("Range_Size")
-	static function range_Size(self:Float):Float;
-	@:native("Rect_Clamp_double")
-	static function rect_Clamp_double(self:Float, x:Float, y:Float):ImPlotPoint;
-	@:native("Rect_Clamp_PlotPoint")
-	static function rect_Clamp_PlotPoint(self:Float, p:ImPlotPoint):ImPlotPoint;
-	@:native("Rect_Contains_double")
-	static function rect_Contains_double(self:Float, x:Float, y:Float):Bool;
-	@:native("Rect_Contains_PlotPoint")
-	static function rect_Contains_PlotPoint(self:Float, p:ImPlotPoint):Bool;
-	@:native("Rect_destroy")
-	static function rect_destroy(self:Float):Void;
-	@:native("Rect_ImPlotRect_double")
-	static function rect_ImPlotRect_double(x_min:Float, x_max:Float, y_min:Float, y_max:Float):Float;
-	@:native("Rect_ImPlotRect_Nil")
-	static function rect_ImPlotRect_Nil():Float;
-	@:native("Rect_Max")
-	static function rect_Max(self:Float):ImPlotPoint;
-	@:native("Rect_Min")
-	static function rect_Min(self:Float):ImPlotPoint;
-	@:native("Rect_Size")
-	static function rect_Size(self:Float):ImPlotPoint;
-	@:native("Spec_destroy")
-	static function spec_destroy(self:Float):Void;
-	@:native("Spec_ImPlotSpec")
-	static function spec_ImPlotSpec():Float;
-	@:native("Spec_SetProp_double")
-	static function spec_SetProp_double(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_Float")
-	static function spec_SetProp_Float(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_FloatPtr")
-	static function spec_SetProp_FloatPtr(self:Float, prop:Float, v:Array<Float>):Void;
-	@:native("Spec_SetProp_S16")
-	static function spec_SetProp_S16(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_S32")
-	static function spec_SetProp_S32(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_S64")
-	static function spec_SetProp_S64(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_S8")
-	static function spec_SetProp_S8(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_U16")
-	static function spec_SetProp_U16(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_U32")
-	static function spec_SetProp_U32(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_U32Ptr")
-	static function spec_SetProp_U32Ptr(self:Float, prop:Float, v:Array<Float>):Void;
-	@:native("Spec_SetProp_U64")
-	static function spec_SetProp_U64(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_U8")
-	static function spec_SetProp_U8(self:Float, prop:Float, v:Float):Void;
-	@:native("Spec_SetProp_Vec4")
-	static function spec_SetProp_Vec4(self:Float, prop:Float, v:imguijs.Abstracts.ImVec4):Void;
 	@:native("Style_destroy")
 	static function style_destroy(self:Float):Void;
 	@:native("Style_ImPlotStyle")

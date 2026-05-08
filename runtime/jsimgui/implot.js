@@ -64,6 +64,38 @@ export class ImPlotTime extends ValueStruct {
         return new ImPlotTime(obj.S, obj.Us);
     }
 }
+export class ImPlotSpec extends ValueStruct {
+    LineColor;
+    LineWeight;
+    FillColor;
+    FillAlpha;
+    Marker;
+    MarkerSize;
+    MarkerLineColor;
+    MarkerFillColor;
+    Size;
+    Offset;
+    Stride;
+    Flags;
+    constructor(LineColor = new ImVec4(0.0, 0.0, 0.0, -1.0), LineWeight = 1.0, FillColor = new ImVec4(0.0, 0.0, 0.0, -1.0), FillAlpha = 1.0, Marker = 0, MarkerSize = 4.0, MarkerLineColor = new ImVec4(0.0, 0.0, 0.0, -1.0), MarkerFillColor = new ImVec4(0.0, 0.0, 0.0, -1.0), Size = 4.0, Offset = 0, Stride = -1, Flags = 0) {
+        super();
+        this.LineColor = LineColor;
+        this.LineWeight = LineWeight;
+        this.FillColor = FillColor;
+        this.FillAlpha = FillAlpha;
+        this.Marker = Marker;
+        this.MarkerSize = MarkerSize;
+        this.MarkerLineColor = MarkerLineColor;
+        this.MarkerFillColor = MarkerFillColor;
+        this.Size = Size;
+        this.Offset = Offset;
+        this.Stride = Stride;
+        this.Flags = Flags;
+    }
+    static From(obj) {
+        return new ImPlotSpec(ImVec4.From(obj.LineColor), obj.LineWeight, ImVec4.From(obj.FillColor), obj.FillAlpha, obj.Marker, obj.MarkerSize, ImVec4.From(obj.MarkerLineColor), ImVec4.From(obj.MarkerFillColor), obj.Size, obj.Offset, obj.Stride, obj.Flags);
+    }
+}
 export const ImPlot = {
     Auto: -1,
     Axis: {
@@ -551,772 +583,97 @@ export const ImPlot = {
     NextMarker() {
         return Mod.export.ImPlot_NextMarker();
     },
-    PixelsToPlot_Float(x, y, x_axis = -1, y_axis = -1) {
+    PixelsToPlot(x, y, x_axis = -1, y_axis = -1) {
         return ImPlotPoint.From(Mod.export.ImPlot_PixelsToPlot_Float(x, y, x_axis, y_axis));
     },
-    PixelsToPlot_Vec2(pix, x_axis = -1, y_axis = -1) {
+    PixelsToPlotVec2(pix, x_axis = -1, y_axis = -1) {
         return ImPlotPoint.From(Mod.export.ImPlot_PixelsToPlot_Vec2(pix, x_axis, y_axis));
     },
-    PlotBarGroups_doublePtr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
+    PlotBarGroups(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
         Mod.export.ImPlot_PlotBarGroups_doublePtr(label_ids, values, item_count, group_count, group_size, shift, spec);
     },
-    PlotBarGroups_FloatPtr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_FloatPtr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_S16Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_S16Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_S32Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_S32Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_S64Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_S64Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_S8Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_S8Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_U16Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_U16Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_U32Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_U32Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_U64Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_U64Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBarGroups_U8Ptr(label_ids, values, item_count, group_count, group_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBarGroups_U8Ptr(label_ids, values, item_count, group_count, group_size, shift, spec);
-    },
-    PlotBars_doublePtrdoublePtr(label_id, xs, ys, count, bar_size, spec = null) {
+    PlotBarsXY(label_id, xs, ys, count, bar_size, spec = null) {
         Mod.export.ImPlot_PlotBars_doublePtrdoublePtr(label_id, xs, ys, count, bar_size, spec);
     },
-    PlotBars_doublePtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
+    PlotBars(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
         Mod.export.ImPlot_PlotBars_doublePtrInt(label_id, values, count, bar_size, shift, spec);
     },
-    PlotBars_FloatPtrFloatPtr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_FloatPtrFloatPtr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_FloatPtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_FloatPtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_S16PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_S16PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_S16PtrS16Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_S16PtrS16Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_S32PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_S32PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_S32PtrS32Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_S32PtrS32Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_S64PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_S64PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_S64PtrS64Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_S64PtrS64Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_S8PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_S8PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_S8PtrS8Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_S8PtrS8Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_U16PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_U16PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_U16PtrU16Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_U16PtrU16Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_U32PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_U32PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_U32PtrU32Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_U32PtrU32Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_U64PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_U64PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_U64PtrU64Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_U64PtrU64Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBars_U8PtrInt(label_id, values, count, bar_size = 0.67, shift = 0, spec = null) {
-        Mod.export.ImPlot_PlotBars_U8PtrInt(label_id, values, count, bar_size, shift, spec);
-    },
-    PlotBars_U8PtrU8Ptr(label_id, xs, ys, count, bar_size, spec = null) {
-        Mod.export.ImPlot_PlotBars_U8PtrU8Ptr(label_id, xs, ys, count, bar_size, spec);
-    },
-    PlotBubbles_doublePtrdoublePtrdoublePtr(label_id, xs, ys, szs, count, spec = null) {
+    PlotBubblesXY(label_id, xs, ys, szs, count, spec = null) {
         Mod.export.ImPlot_PlotBubbles_doublePtrdoublePtrdoublePtr(label_id, xs, ys, szs, count, spec);
     },
-    PlotBubbles_doublePtrdoublePtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
+    PlotBubbles(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
         Mod.export.ImPlot_PlotBubbles_doublePtrdoublePtrInt(label_id, values, szs, count, xscale, xstart, spec);
     },
-    PlotBubbles_FloatPtrFloatPtrFloatPtr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_FloatPtrFloatPtrFloatPtr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_FloatPtrFloatPtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_FloatPtrFloatPtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_S16PtrS16PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S16PtrS16PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_S16PtrS16PtrS16Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S16PtrS16PtrS16Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_S32PtrS32PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S32PtrS32PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_S32PtrS32PtrS32Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S32PtrS32PtrS32Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_S64PtrS64PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S64PtrS64PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_S64PtrS64PtrS64Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S64PtrS64PtrS64Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_S8PtrS8PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S8PtrS8PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_S8PtrS8PtrS8Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_S8PtrS8PtrS8Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_U16PtrU16PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U16PtrU16PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_U16PtrU16PtrU16Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U16PtrU16PtrU16Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_U32PtrU32PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U32PtrU32PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_U32PtrU32PtrU32Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U32PtrU32PtrU32Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_U64PtrU64PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U64PtrU64PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_U64PtrU64PtrU64Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U64PtrU64PtrU64Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotBubbles_U8PtrU8PtrInt(label_id, values, szs, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U8PtrU8PtrInt(label_id, values, szs, count, xscale, xstart, spec);
-    },
-    PlotBubbles_U8PtrU8PtrU8Ptr(label_id, xs, ys, szs, count, spec = null) {
-        Mod.export.ImPlot_PlotBubbles_U8PtrU8PtrU8Ptr(label_id, xs, ys, szs, count, spec);
-    },
-    PlotDigital_doublePtr(label_id, xs, ys, count, spec = null) {
+    PlotDigital(label_id, xs, ys, count, spec = null) {
         Mod.export.ImPlot_PlotDigital_doublePtr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_FloatPtr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_FloatPtr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_S16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_S16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_S32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_S32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_S64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_S64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_S8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_S8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_U16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_U16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_U32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_U32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_U64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_U64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotDigital_U8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotDigital_U8Ptr(label_id, xs, ys, count, spec);
     },
     PlotDummy(label_id, spec = null) {
         Mod.export.ImPlot_PlotDummy(label_id, spec);
     },
-    PlotErrorBars_doublePtrdoublePtrdoublePtrdoublePtr(label_id, xs, ys, neg, pos, count, spec = null) {
+    PlotErrorBarsRange(label_id, xs, ys, neg, pos, count, spec = null) {
         Mod.export.ImPlot_PlotErrorBars_doublePtrdoublePtrdoublePtrdoublePtr(label_id, xs, ys, neg, pos, count, spec);
     },
-    PlotErrorBars_doublePtrdoublePtrdoublePtrInt(label_id, xs, ys, err, count, spec = null) {
+    PlotErrorBars(label_id, xs, ys, err, count, spec = null) {
         Mod.export.ImPlot_PlotErrorBars_doublePtrdoublePtrdoublePtrInt(label_id, xs, ys, err, count, spec);
     },
-    PlotErrorBars_FloatPtrFloatPtrFloatPtrFloatPtr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_FloatPtrFloatPtrFloatPtrFloatPtr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_FloatPtrFloatPtrFloatPtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_FloatPtrFloatPtrFloatPtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_S16PtrS16PtrS16PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S16PtrS16PtrS16PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_S16PtrS16PtrS16PtrS16Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S16PtrS16PtrS16PtrS16Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_S32PtrS32PtrS32PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S32PtrS32PtrS32PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_S32PtrS32PtrS32PtrS32Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S32PtrS32PtrS32PtrS32Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_S64PtrS64PtrS64PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S64PtrS64PtrS64PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_S64PtrS64PtrS64PtrS64Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S64PtrS64PtrS64PtrS64Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_S8PtrS8PtrS8PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S8PtrS8PtrS8PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_S8PtrS8PtrS8PtrS8Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_S8PtrS8PtrS8PtrS8Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_U16PtrU16PtrU16PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U16PtrU16PtrU16PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_U16PtrU16PtrU16PtrU16Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U16PtrU16PtrU16PtrU16Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_U32PtrU32PtrU32PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U32PtrU32PtrU32PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_U32PtrU32PtrU32PtrU32Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U32PtrU32PtrU32PtrU32Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_U64PtrU64PtrU64PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U64PtrU64PtrU64PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_U64PtrU64PtrU64PtrU64Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U64PtrU64PtrU64PtrU64Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotErrorBars_U8PtrU8PtrU8PtrInt(label_id, xs, ys, err, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U8PtrU8PtrU8PtrInt(label_id, xs, ys, err, count, spec);
-    },
-    PlotErrorBars_U8PtrU8PtrU8PtrU8Ptr(label_id, xs, ys, neg, pos, count, spec = null) {
-        Mod.export.ImPlot_PlotErrorBars_U8PtrU8PtrU8PtrU8Ptr(label_id, xs, ys, neg, pos, count, spec);
-    },
-    PlotHeatmap_doublePtr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
+    PlotHeatmap(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
         Mod.export.ImPlot_PlotHeatmap_doublePtr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
     },
-    PlotHeatmap_FloatPtr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_FloatPtr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_S16Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_S16Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_S32Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_S32Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_S64Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_S64Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_S8Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_S8Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_U16Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_U16Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_U32Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_U32Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_U64Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_U64Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHeatmap_U8Ptr(label_id, values, rows, cols, scale_min = 0, scale_max = 0, label_fmt = "%.1f", bounds_min = new ImPlotPoint(0, 0), bounds_max = new ImPlotPoint(1, 1), spec = null) {
-        Mod.export.ImPlot_PlotHeatmap_U8Ptr(label_id, values, rows, cols, scale_min, scale_max, label_fmt, bounds_min, bounds_max, spec);
-    },
-    PlotHistogram_doublePtr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
+    PlotHistogram(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
         return Mod.export.ImPlot_PlotHistogram_doublePtr(label_id, values, count, bins, bar_scale, range, spec);
     },
-    PlotHistogram_FloatPtr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_FloatPtr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_S16Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_S16Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_S32Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_S32Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_S64Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_S64Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_S8Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_S8Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_U16Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_U16Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_U32Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_U32Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_U64Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_U64Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram_U8Ptr(label_id, values, count, bins = -2, bar_scale = 1.0, range = new ImPlotRange(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram_U8Ptr(label_id, values, count, bins, bar_scale, range, spec);
-    },
-    PlotHistogram2D_doublePtr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
+    PlotHistogram2D(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
         return Mod.export.ImPlot_PlotHistogram2D_doublePtr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
     },
-    PlotHistogram2D_FloatPtr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_FloatPtr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_S16Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_S16Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_S32Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_S32Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_S64Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_S64Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_S8Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_S8Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_U16Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_U16Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_U32Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_U32Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_U64Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_U64Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotHistogram2D_U8Ptr(label_id, xs, ys, count, x_bins = -2, y_bins = -2, range = new ImPlotRect(), spec = null) {
-        return Mod.export.ImPlot_PlotHistogram2D_U8Ptr(label_id, xs, ys, count, x_bins, y_bins, range, spec);
-    },
-    PlotInfLines_doublePtr(label_id, values, count, spec = null) {
+    PlotInfLines(label_id, values, count, spec = null) {
         Mod.export.ImPlot_PlotInfLines_doublePtr(label_id, values, count, spec);
     },
-    PlotInfLines_FloatPtr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_FloatPtr(label_id, values, count, spec);
-    },
-    PlotInfLines_S16Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_S16Ptr(label_id, values, count, spec);
-    },
-    PlotInfLines_S32Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_S32Ptr(label_id, values, count, spec);
-    },
-    PlotInfLines_S64Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_S64Ptr(label_id, values, count, spec);
-    },
-    PlotInfLines_S8Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_S8Ptr(label_id, values, count, spec);
-    },
-    PlotInfLines_U16Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_U16Ptr(label_id, values, count, spec);
-    },
-    PlotInfLines_U32Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_U32Ptr(label_id, values, count, spec);
-    },
-    PlotInfLines_U64Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_U64Ptr(label_id, values, count, spec);
-    },
-    PlotInfLines_U8Ptr(label_id, values, count, spec = null) {
-        Mod.export.ImPlot_PlotInfLines_U8Ptr(label_id, values, count, spec);
-    },
-    PlotLine_doublePtrdoublePtr(label_id, xs, ys, count, spec = null) {
+    PlotLineXY(label_id, xs, ys, count, spec = null) {
         Mod.export.ImPlot_PlotLine_doublePtrdoublePtr(label_id, xs, ys, count, spec);
     },
-    PlotLine_doublePtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
+    PlotLine(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
         Mod.export.ImPlot_PlotLine_doublePtrInt(label_id, values, count, xscale, xstart, spec);
     },
-    PlotLine_FloatPtrFloatPtr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_FloatPtrFloatPtr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_FloatPtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_FloatPtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_S16PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_S16PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_S16PtrS16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_S16PtrS16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_S32PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_S32PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_S32PtrS32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_S32PtrS32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_S64PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_S64PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_S64PtrS64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_S64PtrS64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_S8PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_S8PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_S8PtrS8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_S8PtrS8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_U16PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_U16PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_U16PtrU16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_U16PtrU16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_U32PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_U32PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_U32PtrU32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_U32PtrU32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_U64PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_U64PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_U64PtrU64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_U64PtrU64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotLine_U8PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotLine_U8PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotLine_U8PtrU8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotLine_U8PtrU8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPieChart_doublePtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
+    PlotPieChart(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
         Mod.export.ImPlot_PlotPieChart_doublePtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
     },
-    PlotPieChart_FloatPtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_FloatPtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_S16PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_S16PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_S32PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_S32PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_S64PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_S64PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_S8PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_S8PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_U16PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_U16PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_U32PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_U32PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_U64PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_U64PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPieChart_U8PtrStr(label_ids, values, count, x, y, radius, label_fmt = "%.1f", angle0 = 90, spec = null) {
-        Mod.export.ImPlot_PlotPieChart_U8PtrStr(label_ids, values, count, x, y, radius, label_fmt, angle0, spec);
-    },
-    PlotPolygon_doublePtr(label_id, xs, ys, count, spec = null) {
+    PlotPolygon(label_id, xs, ys, count, spec = null) {
         Mod.export.ImPlot_PlotPolygon_doublePtr(label_id, xs, ys, count, spec);
     },
-    PlotPolygon_FloatPtr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_FloatPtr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_S16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_S16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_S32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_S32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_S64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_S64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_S8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_S8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_U16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_U16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_U32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_U32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_U64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_U64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotPolygon_U8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotPolygon_U8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_doublePtrdoublePtr(label_id, xs, ys, count, spec = null) {
+    PlotScatterXY(label_id, xs, ys, count, spec = null) {
         Mod.export.ImPlot_PlotScatter_doublePtrdoublePtr(label_id, xs, ys, count, spec);
     },
-    PlotScatter_doublePtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
+    PlotScatter(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
         Mod.export.ImPlot_PlotScatter_doublePtrInt(label_id, values, count, xscale, xstart, spec);
     },
-    PlotScatter_FloatPtrFloatPtr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_FloatPtrFloatPtr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_FloatPtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_FloatPtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_S16PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S16PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_S16PtrS16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S16PtrS16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_S32PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S32PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_S32PtrS32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S32PtrS32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_S64PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S64PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_S64PtrS64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S64PtrS64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_S8PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S8PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_S8PtrS8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_S8PtrS8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_U16PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U16PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_U16PtrU16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U16PtrU16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_U32PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U32PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_U32PtrU32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U32PtrU32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_U64PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U64PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_U64PtrU64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U64PtrU64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotScatter_U8PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U8PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotScatter_U8PtrU8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotScatter_U8PtrU8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotShaded_doublePtrdoublePtrdoublePtr(label_id, xs, ys1, ys2, count, spec = null) {
+    PlotShadedBand(label_id, xs, ys1, ys2, count, spec = null) {
         Mod.export.ImPlot_PlotShaded_doublePtrdoublePtrdoublePtr(label_id, xs, ys1, ys2, count, spec);
     },
-    PlotShaded_doublePtrdoublePtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
+    PlotShadedXY(label_id, xs, ys, count, yref = 0, spec = null) {
         Mod.export.ImPlot_PlotShaded_doublePtrdoublePtrInt(label_id, xs, ys, count, yref, spec);
     },
-    PlotShaded_doublePtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
+    PlotShaded(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
         Mod.export.ImPlot_PlotShaded_doublePtrInt(label_id, values, count, yref, xscale, xstart, spec);
     },
-    PlotShaded_FloatPtrFloatPtrFloatPtr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_FloatPtrFloatPtrFloatPtr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_FloatPtrFloatPtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_FloatPtrFloatPtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_FloatPtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_FloatPtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_S16PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S16PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_S16PtrS16PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S16PtrS16PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_S16PtrS16PtrS16Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S16PtrS16PtrS16Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_S32PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S32PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_S32PtrS32PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S32PtrS32PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_S32PtrS32PtrS32Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S32PtrS32PtrS32Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_S64PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S64PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_S64PtrS64PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S64PtrS64PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_S64PtrS64PtrS64Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S64PtrS64PtrS64Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_S8PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S8PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_S8PtrS8PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S8PtrS8PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_S8PtrS8PtrS8Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_S8PtrS8PtrS8Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_U16PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U16PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_U16PtrU16PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U16PtrU16PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_U16PtrU16PtrU16Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U16PtrU16PtrU16Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_U32PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U32PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_U32PtrU32PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U32PtrU32PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_U32PtrU32PtrU32Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U32PtrU32PtrU32Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_U64PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U64PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_U64PtrU64PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U64PtrU64PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_U64PtrU64PtrU64Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U64PtrU64PtrU64Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotShaded_U8PtrInt(label_id, values, count, yref = 0, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U8PtrInt(label_id, values, count, yref, xscale, xstart, spec);
-    },
-    PlotShaded_U8PtrU8PtrInt(label_id, xs, ys, count, yref = 0, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U8PtrU8PtrInt(label_id, xs, ys, count, yref, spec);
-    },
-    PlotShaded_U8PtrU8PtrU8Ptr(label_id, xs, ys1, ys2, count, spec = null) {
-        Mod.export.ImPlot_PlotShaded_U8PtrU8PtrU8Ptr(label_id, xs, ys1, ys2, count, spec);
-    },
-    PlotStairs_doublePtrdoublePtr(label_id, xs, ys, count, spec = null) {
+    PlotStairsXY(label_id, xs, ys, count, spec = null) {
         Mod.export.ImPlot_PlotStairs_doublePtrdoublePtr(label_id, xs, ys, count, spec);
     },
-    PlotStairs_doublePtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
+    PlotStairs(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
         Mod.export.ImPlot_PlotStairs_doublePtrInt(label_id, values, count, xscale, xstart, spec);
     },
-    PlotStairs_FloatPtrFloatPtr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_FloatPtrFloatPtr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_FloatPtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_FloatPtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_S16PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S16PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_S16PtrS16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S16PtrS16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_S32PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S32PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_S32PtrS32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S32PtrS32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_S64PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S64PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_S64PtrS64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S64PtrS64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_S8PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S8PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_S8PtrS8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_S8PtrS8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_U16PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U16PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_U16PtrU16Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U16PtrU16Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_U32PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U32PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_U32PtrU32Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U32PtrU32Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_U64PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U64PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_U64PtrU64Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U64PtrU64Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStairs_U8PtrInt(label_id, values, count, xscale = 1, xstart = 0, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U8PtrInt(label_id, values, count, xscale, xstart, spec);
-    },
-    PlotStairs_U8PtrU8Ptr(label_id, xs, ys, count, spec = null) {
-        Mod.export.ImPlot_PlotStairs_U8PtrU8Ptr(label_id, xs, ys, count, spec);
-    },
-    PlotStems_doublePtrdoublePtr(label_id, xs, ys, count, ref = 0, spec = null) {
+    PlotStemsXY(label_id, xs, ys, count, ref = 0, spec = null) {
         Mod.export.ImPlot_PlotStems_doublePtrdoublePtr(label_id, xs, ys, count, ref, spec);
     },
-    PlotStems_doublePtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
+    PlotStems(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
         Mod.export.ImPlot_PlotStems_doublePtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_FloatPtrFloatPtr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_FloatPtrFloatPtr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_FloatPtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_FloatPtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_S16PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S16PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_S16PtrS16Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S16PtrS16Ptr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_S32PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S32PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_S32PtrS32Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S32PtrS32Ptr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_S64PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S64PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_S64PtrS64Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S64PtrS64Ptr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_S8PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S8PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_S8PtrS8Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_S8PtrS8Ptr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_U16PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U16PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_U16PtrU16Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U16PtrU16Ptr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_U32PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U32PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_U32PtrU32Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U32PtrU32Ptr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_U64PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U64PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_U64PtrU64Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U64PtrU64Ptr(label_id, xs, ys, count, ref, spec);
-    },
-    PlotStems_U8PtrInt(label_id, values, count, ref = 0, scale = 1, start = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U8PtrInt(label_id, values, count, ref, scale, start, spec);
-    },
-    PlotStems_U8PtrU8Ptr(label_id, xs, ys, count, ref = 0, spec = null) {
-        Mod.export.ImPlot_PlotStems_U8PtrU8Ptr(label_id, xs, ys, count, ref, spec);
     },
     PlotText(text, x, y, pix_offset = new ImVec2(0, 0), spec = null) {
         Mod.export.ImPlot_PlotText(text, x, y, pix_offset, spec);
     },
-    PlotToPixels_double(x, y, x_axis = -1, y_axis = -1) {
+    PlotToPixels(x, y, x_axis = -1, y_axis = -1) {
         return ImVec2.From(Mod.export.ImPlot_PlotToPixels_double(x, y, x_axis, y_axis));
     },
-    PlotToPixels_PlotPoint(plt, x_axis = -1, y_axis = -1) {
+    PlotToPixelsPoint(plt, x_axis = -1, y_axis = -1) {
         return ImVec2.From(Mod.export.ImPlot_PlotToPixels_PlotPoint(plt, x_axis, y_axis));
     },
     PopColormap(count = 1) {
@@ -1409,10 +766,10 @@ export const ImPlot = {
     SetupAxisScale_PlotScale(axis, scale) {
         Mod.export.ImPlot_SetupAxisScale_PlotScale(axis, scale);
     },
-    SetupAxisTicks_double(axis, v_min, v_max, n_ticks, labels = null, keep_default = false) {
+    SetupAxisTicksRange(axis, v_min, v_max, n_ticks, labels = null, keep_default = false) {
         Mod.export.ImPlot_SetupAxisTicks_double(axis, v_min, v_max, n_ticks, labels, keep_default);
     },
-    SetupAxisTicks_doublePtr(axis, values, n_ticks, labels = null, keep_default = false) {
+    SetupAxisTicks(axis, values, n_ticks, labels = null, keep_default = false) {
         Mod.export.ImPlot_SetupAxisTicks_doublePtr(axis, values, n_ticks, labels, keep_default);
     },
     SetupAxisZoomConstraints(axis, z_min, z_max) {
@@ -1465,111 +822,6 @@ export const ImPlot = {
     },
     InputMap_ImPlotInputMap() {
         return Mod.export.ImPlotInputMap_ImPlotInputMap();
-    },
-    Point_destroy(self) {
-        Mod.export.ImPlotPoint_destroy(self);
-    },
-    Point_ImPlotPoint_double(_x, _y) {
-        return Mod.export.ImPlotPoint_ImPlotPoint_double(_x, _y);
-    },
-    Point_ImPlotPoint_Nil() {
-        return Mod.export.ImPlotPoint_ImPlotPoint_Nil();
-    },
-    Point_ImPlotPoint_Vec2(p) {
-        return Mod.export.ImPlotPoint_ImPlotPoint_Vec2(p);
-    },
-    Range_Clamp(self, value) {
-        return Mod.export.ImPlotRange_Clamp(self, value);
-    },
-    Range_Contains(self, value) {
-        return Mod.export.ImPlotRange_Contains(self, value);
-    },
-    Range_destroy(self) {
-        Mod.export.ImPlotRange_destroy(self);
-    },
-    Range_ImPlotRange_double(_min, _max) {
-        return Mod.export.ImPlotRange_ImPlotRange_double(_min, _max);
-    },
-    Range_ImPlotRange_Nil() {
-        return Mod.export.ImPlotRange_ImPlotRange_Nil();
-    },
-    Range_Size(self) {
-        return Mod.export.ImPlotRange_Size(self);
-    },
-    Rect_Clamp_double(self, x, y) {
-        return ImPlotPoint.From(Mod.export.ImPlotRect_Clamp_double(self, x, y));
-    },
-    Rect_Clamp_PlotPoint(self, p) {
-        return ImPlotPoint.From(Mod.export.ImPlotRect_Clamp_PlotPoint(self, p));
-    },
-    Rect_Contains_double(self, x, y) {
-        return Mod.export.ImPlotRect_Contains_double(self, x, y);
-    },
-    Rect_Contains_PlotPoint(self, p) {
-        return Mod.export.ImPlotRect_Contains_PlotPoint(self, p);
-    },
-    Rect_destroy(self) {
-        Mod.export.ImPlotRect_destroy(self);
-    },
-    Rect_ImPlotRect_double(x_min, x_max, y_min, y_max) {
-        return Mod.export.ImPlotRect_ImPlotRect_double(x_min, x_max, y_min, y_max);
-    },
-    Rect_ImPlotRect_Nil() {
-        return Mod.export.ImPlotRect_ImPlotRect_Nil();
-    },
-    Rect_Max(self) {
-        return ImPlotPoint.From(Mod.export.ImPlotRect_Max(self));
-    },
-    Rect_Min(self) {
-        return ImPlotPoint.From(Mod.export.ImPlotRect_Min(self));
-    },
-    Rect_Size(self) {
-        return ImPlotPoint.From(Mod.export.ImPlotRect_Size(self));
-    },
-    Spec_destroy(self) {
-        Mod.export.ImPlotSpec_destroy(self);
-    },
-    Spec_ImPlotSpec() {
-        return Mod.export.ImPlotSpec_ImPlotSpec();
-    },
-    Spec_SetProp_double(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_double(self, prop, v);
-    },
-    Spec_SetProp_Float(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_Float(self, prop, v);
-    },
-    Spec_SetProp_FloatPtr(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_FloatPtr(self, prop, v);
-    },
-    Spec_SetProp_S16(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_S16(self, prop, v);
-    },
-    Spec_SetProp_S32(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_S32(self, prop, v);
-    },
-    Spec_SetProp_S64(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_S64(self, prop, v);
-    },
-    Spec_SetProp_S8(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_S8(self, prop, v);
-    },
-    Spec_SetProp_U16(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_U16(self, prop, v);
-    },
-    Spec_SetProp_U32(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_U32(self, prop, v);
-    },
-    Spec_SetProp_U32Ptr(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_U32Ptr(self, prop, v);
-    },
-    Spec_SetProp_U64(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_U64(self, prop, v);
-    },
-    Spec_SetProp_U8(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_U8(self, prop, v);
-    },
-    Spec_SetProp_Vec4(self, prop, v) {
-        Mod.export.ImPlotSpec_SetProp_Vec4(self, prop, v);
     },
     Style_destroy(self) {
         Mod.export.ImPlotStyle_destroy(self);
