@@ -8,17 +8,22 @@ const repoRoot = path.resolve(import.meta.dirname, '..')
 const runtimeRoot = 'globalThis.__imguiHxJsImGui'
 const require = createRequire(import.meta.url)
 const jsimguiBuildRoot = path.resolve(repoRoot, 'runtime', 'jsimgui')
-const splitDtsPaths = [
+const requiredSplitDtsPaths = [
 	path.resolve(jsimguiBuildRoot, 'core.d.ts'),
 	path.resolve(jsimguiBuildRoot, 'imgui.d.ts'),
 	path.resolve(jsimguiBuildRoot, 'impl', 'web.d.ts'),
 ]
+const optionalSplitDtsPaths = [
+	path.resolve(jsimguiBuildRoot, 'implot.d.ts'),
+]
 const bundledDtsPaths = [path.resolve(jsimguiBuildRoot, 'mod.d.ts')]
 const tsPath = require.resolve('typescript/lib/typescript.js')
 const imguiOutputPath = path.resolve(repoRoot, 'src', 'imguijs', 'ImGui.hx')
+const implotOutputPath = path.resolve(repoRoot, 'src', 'imguijs', 'ImPlot.hx')
 const imguiImplOutputPath = path.resolve(repoRoot, 'src', 'imguijs', 'ImGuiImplWeb.hx')
 const moduleOutputPath = path.resolve(repoRoot, 'src', 'imguijs', 'Module.hx')
 const rootAliasPath = path.resolve(repoRoot, 'src', 'imgui', 'ImGui.hx')
+const rootImPlotAliasPath = path.resolve(repoRoot, 'src', 'imgui', 'ImPlot.hx')
 
 const tsModule = await import(pathToFileURL(tsPath).href)
 const ts = tsModule.default ?? tsModule
@@ -88,7 +93,7 @@ function fail(message) {
 }
 
 async function readSourceFiles() {
-	for (const filePaths of [splitDtsPaths, bundledDtsPaths]) {
+	for (const filePaths of [requiredSplitDtsPaths, bundledDtsPaths]) {
 		const files = []
 		let missingPath = null
 
@@ -105,6 +110,16 @@ async function readSourceFiles() {
 		}
 
 		if (missingPath == null) {
+			for (const filePath of optionalSplitDtsPaths) {
+				try {
+					files.push({
+						filePath,
+						sourceText: await fs.readFile(filePath, 'utf8'),
+					})
+				} catch {
+					// Extension declarations are optional for non-extension runtime builds.
+				}
+			}
 			return files
 		}
 	}
@@ -187,11 +202,14 @@ function collectDeclarations(sourceFiles) {
 	}
 }
 
-function resolveGroupTypeName(groupName, aliasNames) {
-	if (groupName.startsWith('Im')) {
+function resolveGroupTypeName(groupName, aliasNames, rootName) {
+	if (aliasNames.has(groupName)) {
 		return groupName
 	}
-	if (aliasNames.has(groupName)) {
+	if (rootName === 'ImPlot' && aliasNames.has(`ImPlot${groupName}`)) {
+		return `ImPlot${groupName}`
+	}
+	if (groupName.startsWith('Im')) {
 		return groupName
 	}
 	if (aliasNames.has(`ImGui${groupName}`)) {
@@ -226,12 +244,12 @@ function isNullishTypeNode(typeNode) {
 	return false
 }
 
-function collectImGuiGroups(imguiDeclaration, aliasNames) {
+function collectConstObjectGroups(constDeclaration, aliasNames, rootName) {
 	const groups = new Map()
-	if (imguiDeclaration == null || !ts.isTypeLiteralNode(imguiDeclaration.type)) {
+	if (constDeclaration == null || !ts.isTypeLiteralNode(constDeclaration.type)) {
 		return groups
 	}
-	for (const member of imguiDeclaration.type.members) {
+	for (const member of constDeclaration.type.members) {
 		if (!ts.isPropertySignature(member) || member.type == null || member.name == null || !ts.isIdentifier(member.name)) {
 			continue
 		}
@@ -256,8 +274,9 @@ function collectImGuiGroups(imguiDeclaration, aliasNames) {
 		if (!valid || groupMembers.length === 0) {
 			continue
 		}
-		const typeName = resolveGroupTypeName(member.name.text, aliasNames)
+		const typeName = resolveGroupTypeName(member.name.text, aliasNames, rootName)
 		groups.set(typeName, {
+			rootName,
 			groupName: member.name.text,
 			typeName,
 			members: groupMembers,
@@ -325,6 +344,9 @@ function mapType(typeNode, context = {}) {
 		}
 		if (context.interfaceNames?.has(typeName)) {
 			return 'Dynamic'
+		}
+		if (context.typeOverrides?.has(typeName)) {
+			return context.typeOverrides.get(typeName)
 		}
 		if (context.knownTypes?.has(typeName)) {
 			const qualifiedTypeName = context.localTypePrefix != null && typeName !== 'ImGui'
@@ -406,7 +428,7 @@ function renderAbstract(group) {
 		lines.push(`${createIndent(1)}public static var ${member.name}(get, never):${group.typeName};`)
 		lines.push('')
 		lines.push(`${createIndent(1)}static inline function get_${member.name}():${group.typeName} {`)
-		lines.push(`${createIndent(2)}return cast js.Syntax.code(${maybeQuoteMetadata(`${runtimeRoot}.ImGui.${group.groupName}.${member.name}`)});`)
+		lines.push(`${createIndent(2)}return cast js.Syntax.code(${maybeQuoteMetadata(`${runtimeRoot}.${group.rootName}.${group.groupName}.${member.name}`)});`)
 		lines.push(`${createIndent(1)}}`)
 		lines.push('')
 	}
@@ -548,6 +570,9 @@ function renderHeritage(declaration, context) {
 		return ''
 	}
 	const baseName = getNodeText(baseType.expression)
+	if (context.typeOverrides?.has(baseName)) {
+		return ` extends ${context.typeOverrides.get(baseName)}`
+	}
 	if (context.manualClassNames?.has(baseName) || context.knownTypes?.has(baseName)) {
 		return ` extends ${baseName}`
 	}
@@ -611,7 +636,7 @@ function renderModule(exportNames) {
 	return lines.join('\n')
 }
 
-function renderImGuiFile(data) {
+function renderConstObjectFile(data) {
 	const lines = []
 	lines.push('package imguijs;')
 	lines.push('')
@@ -642,7 +667,7 @@ function renderImGuiFile(data) {
 		lines.push(renderClass(name, declaration, data.context))
 	}
 
-	lines.push(renderConstObjectClass('ImGui', data.imguiDeclaration, data.context, data.imguiGroupNames))
+	lines.push(renderConstObjectClass(data.objectName, data.constDeclaration, data.context, data.groupNames))
 	lines.push('')
 	lines.push('#end')
 	lines.push('')
@@ -686,6 +711,27 @@ function updateRootAliasFile(aliasNames) {
 	return fs.writeFile(rootAliasPath, updated)
 }
 
+function renderRootAliasFile(rootName, aliasNames) {
+	const lines = ['package imgui;', '', '#if js', `typedef ${rootName} = imguijs.${rootName};`]
+	for (const aliasName of aliasNames) {
+		if (aliasName === rootName || aliasName === 'Module' || aliasName === 'Runtime' || aliasName === 'State') {
+			continue
+		}
+		lines.push(`typedef ${aliasName} = imguijs.${rootName}.${aliasName};`)
+	}
+	lines.push('#end')
+	lines.push('')
+	return lines.join('\n')
+}
+
+function isImPlotName(name) {
+	return name === 'ImAxis' || name.startsWith('ImPlot')
+}
+
+function filterMapEntries(map, predicate) {
+	return new Map(Array.from(map.entries()).filter(([name]) => predicate(name)))
+}
+
 async function main() {
 	const sourceFiles = (await readSourceFiles()).map(({ filePath, sourceText }) =>
 		ts.createSourceFile(filePath, sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS),
@@ -693,6 +739,7 @@ async function main() {
 	const declarations = collectDeclarations(sourceFiles)
 	const aliasNames = new Set(declarations.typeAliases.keys())
 	const imguiDeclaration = declarations.constObjects.get('ImGui')
+	const implotDeclaration = declarations.constObjects.get('ImPlot')
 	const implDeclaration = declarations.constObjects.get('ImGuiImplWeb')
 
 	if (imguiDeclaration == null) {
@@ -702,13 +749,22 @@ async function main() {
 		fail('Unable to find exported const ImGuiImplWeb in the jsimgui build declarations.')
 	}
 
-	const groups = collectImGuiGroups(imguiDeclaration, aliasNames)
-	const groupTypeNames = new Set(groups.keys())
-	const imguiGroupNames = new Set(Array.from(groups.values(), group => group.groupName))
+	const imguiGroups = collectConstObjectGroups(imguiDeclaration, aliasNames, 'ImGui')
+	const implotGroups = collectConstObjectGroups(implotDeclaration, aliasNames, 'ImPlot')
+	const imguiGroupTypeNames = new Set(imguiGroups.keys())
+	const implotGroupTypeNames = new Set(implotGroups.keys())
+	const allGroupTypeNames = new Set([...imguiGroups.keys(), ...implotGroups.keys()])
+	const imguiGroupNames = new Set(Array.from(imguiGroups.values(), group => group.groupName))
+	const implotGroupNames = new Set(Array.from(implotGroups.values(), group => group.groupName))
 	const manualClassNames = new Set(['ValueStruct', 'ReferenceStruct'])
+	const imguiTypeAliases = filterMapEntries(declarations.typeAliases, name => !isImPlotName(name))
+	const implotTypeAliases = filterMapEntries(declarations.typeAliases, isImPlotName)
+	const imguiClasses = filterMapEntries(declarations.classes, name => !isImPlotName(name))
+	const implotClasses = filterMapEntries(declarations.classes, isImPlotName)
 	const knownTypes = new Set([
 		...declarations.typeAliases.keys(),
-		...groups.keys(),
+		...imguiGroups.keys(),
+		...implotGroups.keys(),
 		...declarations.classes.keys(),
 		...manualClassNames,
 	])
@@ -717,15 +773,35 @@ async function main() {
 		knownTypes,
 		manualClassNames,
 	}
+	const implotContext = {
+		...context,
+		typeOverrides: new Map([
+			['ImVec2', 'imguijs.Abstracts.ImVec2'],
+			['ImVec4', 'imguijs.Abstracts.ImVec4'],
+			['ReferenceStruct', 'imguijs.ImGui.ReferenceStruct'],
+			['ValueStruct', 'imguijs.ImGui.ValueStruct'],
+		]),
+	}
 
-	const imguiFile = renderImGuiFile({
-		typeAliases: declarations.typeAliases,
-		groups,
-		groupTypeNames,
-		classes: declarations.classes,
-		imguiDeclaration,
-		imguiGroupNames,
+	const imguiFile = renderConstObjectFile({
+		objectName: 'ImGui',
+		typeAliases: imguiTypeAliases,
+		groups: imguiGroups,
+		groupTypeNames: imguiGroupTypeNames,
+		classes: imguiClasses,
+		constDeclaration: imguiDeclaration,
+		groupNames: imguiGroupNames,
 		context,
+	})
+	const implotFile = implotDeclaration == null ? null : renderConstObjectFile({
+		objectName: 'ImPlot',
+		typeAliases: implotTypeAliases,
+		groups: implotGroups,
+		groupTypeNames: implotGroupTypeNames,
+		classes: implotClasses,
+		constDeclaration: implotDeclaration,
+		groupNames: implotGroupNames,
+		context: implotContext,
 	})
 	const imguiImplFile = renderImGuiImplWebFile({
 		implDeclaration,
@@ -743,23 +819,42 @@ async function main() {
 
 	await fs.mkdir(path.dirname(imguiOutputPath), { recursive: true })
 	await fs.writeFile(imguiOutputPath, imguiFile)
+	if (implotFile != null) {
+		await fs.writeFile(implotOutputPath, implotFile)
+	}
 	await fs.writeFile(imguiImplOutputPath, imguiImplFile)
 	await fs.writeFile(moduleOutputPath, moduleFile)
 
 	const aliasNamesForRoot = Array.from(
 		new Set([
-			...Array.from(declarations.typeAliases.keys()).filter(name => !groupTypeNames.has(name)),
-			...groups.keys(),
-			...declarations.classes.keys(),
+			...Array.from(imguiTypeAliases.keys()).filter(name => !allGroupTypeNames.has(name)),
+			...imguiGroups.keys(),
+			...imguiClasses.keys(),
 			...manualClassNames,
 		]),
 	).sort((left, right) => left.localeCompare(right))
 	await updateRootAliasFile(aliasNamesForRoot)
+	if (implotFile != null) {
+		const implotAliasNames = Array.from(
+			new Set([
+				...Array.from(implotTypeAliases.keys()).filter(name => !allGroupTypeNames.has(name)),
+				...implotGroups.keys(),
+				...implotClasses.keys(),
+			]),
+		).sort((left, right) => left.localeCompare(right))
+		await fs.writeFile(rootImPlotAliasPath, renderRootAliasFile('ImPlot', implotAliasNames))
+	}
 
 	console.info(`[jsimgui] Wrote ${path.relative(repoRoot, imguiOutputPath)}`)
+	if (implotFile != null) {
+		console.info(`[jsimgui] Wrote ${path.relative(repoRoot, implotOutputPath)}`)
+	}
 	console.info(`[jsimgui] Wrote ${path.relative(repoRoot, imguiImplOutputPath)}`)
 	console.info(`[jsimgui] Wrote ${path.relative(repoRoot, moduleOutputPath)}`)
 	console.info(`[jsimgui] Updated ${path.relative(repoRoot, rootAliasPath)}`)
+	if (implotFile != null) {
+		console.info(`[jsimgui] Updated ${path.relative(repoRoot, rootImPlotAliasPath)}`)
+	}
 }
 
 main().catch(error => {

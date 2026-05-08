@@ -34,6 +34,12 @@ extern class Module {
 	static var ImGuiTableSortSpecs:Dynamic;
 	static var ImGuiViewport:Dynamic;
 	static var ImGuiWindowClass:Dynamic;
+	static var ImPlot:Dynamic;
+	static var ImPlotDateTimeSpec:Dynamic;
+	static var ImPlotPoint:Dynamic;
+	static var ImPlotRange:Dynamic;
+	static var ImPlotRect:Dynamic;
+	static var ImPlotTime:Dynamic;
 	static var ImTextureRef:Dynamic;
 	static var ImVec2:Dynamic;
 	static var ImVec4:Dynamic;

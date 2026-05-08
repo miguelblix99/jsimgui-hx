@@ -3,6 +3,7 @@ package;
 import imgui.Helpers.*;
 import imgui.ImGui;
 import imgui.ImGuiImplWeb;
+import imgui.ImPlot;
 import imgui.JsRuntime;
 import js.Browser;
 import js.html.CanvasElement;
@@ -35,8 +36,10 @@ class Main
 		JsRuntime.load('/runtime/jsimgui/mod.js')
 			.then(_ -> ImGuiImplWeb.init({
 				canvas: canvas,
+				extensions: true,
 			}))
 			.then(_ -> {
+				ImPlot.createContext();
 				setStatus('ready');
 				Browser.window.requestAnimationFrame(render);
 				return null;
@@ -70,6 +73,11 @@ class Main
 			ImGui.text('imgui-hx JS bindings are using the jsimgui runtime.');
 			ImGui.sliderFloat('Slider value', sliderValue, 0.0, 1.0);
 			ImGui.text('Current value: ' + Std.string(sliderValue[0]));
+			if (ImPlot.beginPlot('ImPlot line'))
+			{
+				ImPlot.plotLine_FloatPtrInt('values', [0.0, 1.0, 0.5, 1.25], 4);
+				ImPlot.endPlot();
+			}
 		}
 		ImGui.end();
 
